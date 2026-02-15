@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskVibe — Nature-Powered To-Do</title>
+    <meta name="description" content="A quirky, nature-infused to-do list that makes work feel alive.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        #auth-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .auth-btn.logout {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(248, 113, 113, 0.2));
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        .auth-btn.logout:hover {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.4), rgba(248, 113, 113, 0.4));
+            border-color: rgba(239, 68, 68, 0.8);
+            color: white;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        }
+
+        #user-display {
+            display: flex;
+            align-items: center;
+        }
+
+        .username-input {
+            background: transparent;
+            border: 1px solid transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100px;
+            text-align: center;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .username-input:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .username-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--spring-green);
+            width: 140px;
+            /* Expand on focus */
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="auth-container">
+        <span id="user-display"></span>
+        <button id="google-login-btn" class="auth-btn" onclick="loginWithGoogle()">🔑 Login with Google</button>
+        <button id="logout-btn" class="auth-btn logout" onclick="logout()" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Logout
+        </button>
+    </div>
+    <div id="surface-section">
+        <canvas id="nature-canvas"></canvas>
+        <div id="environment-layer">
+            <div class="env-sky"></div>
+            <img src="sprites/sun.svg" class="env-sun" alt="" draggable="false">
+            <div class="env-clouds">
+                <img src="sprites/cloud.svg" class="env-cloud env-cloud-1" alt="" draggable="false">
+                <img src="sprites/cloud.svg" class="env-cloud env-cloud-2" alt="" draggable="false">
+                <img src="sprites/cloud.svg" class="env-cloud env-cloud-3" alt="" draggable="false">
+            </div>
+            <img src="sprites/mountain.svg" class="env-mountain" alt="" draggable="false">
+            <canvas id="landscape-canvas"></canvas>
+        </div>
+        <div id="entity-layer"></div>
+        <canvas id="particle-canvas"></canvas>
+        <img id="toilet" src="sprites/toilet.png" draggable="false">
+        <div id="flood-wave"></div>
+
+        <div class="app-container">
+            <header class="app-header">
+                <div class="logo">
+                    <img src="sprites/fern.svg" class="logo-sprite logo-left" alt="" draggable="false">
+                    <h1>TaskVibe <span class="version-tag">v16</span></h1>
+                    <img src="sprites/flower-pink.svg" class="logo-sprite logo-right" alt="" draggable="false">
+                </div>
+                <p class="tagline" id="tagline">Loading vibes...</p>
+            </header>
+
+            <nav class="view-toggle">
+                <button class="view-btn active" id="btn-list-view" data-view="list">
+                    <img src="sprites/fern.svg" class="btn-sprite" alt="" draggable="false"> Grove
+                </button>
+                <button class="view-btn" id="btn-calendar-view" data-view="calendar">
+                    <img src="sprites/sun.svg" class="btn-sprite" alt="" draggable="false"> Seasons
+                </button>
+            </nav>
+
+            <div class="task-input-container" id="task-input-container">
+                <div class="task-input-wrapper">
+                    <img src="sprites/grass.svg" class="input-sprout-sprite" alt="" draggable="false">
+                    <input type="text" id="task-input" class="task-input" placeholder="Plant a new task..."
+                        autocomplete="off">
+                    <input type="date" id="task-date" class="task-date">
+                    <button class="add-btn" id="add-btn">
+                        <img src="sprites/flower-yellow.svg" class="add-btn-sprite" alt="" draggable="false">
+                    </button>
+                </div>
+            </div>
+
+            <section class="view-panel active" id="list-view">
+                <div class="task-list" id="task-list"></div>
+                <div class="empty-state" id="empty-state">
+                    <img src="sprites/deer.svg" class="empty-sprite" alt="" draggable="false">
+                    <h3>The forest is quiet...</h3>
+                    <p>Plant a task above and watch it sprout!</p>
+                </div>
+            </section>
+
+            <section class="view-panel" id="calendar-view">
+                <div class="calendar-header">
+                    <button class="cal-nav-btn" id="cal-prev">&lt;</button>
+                    <h2 class="cal-month-title" id="cal-month-title">Month</h2>
+                    <button class="cal-nav-btn" id="cal-next">&gt;</button>
+                </div>
+                <div class="calendar-grid" id="calendar-grid">
+                    <div class="cal-day-header">Sun</div>
+                    <div class="cal-day-header">Mon</div>
+                    <div class="cal-day-header">Tue</div>
+                    <div class="cal-day-header">Wed</div>
+                    <div class="cal-day-header">Thu</div>
+                    <div class="cal-day-header">Fri</div>
+                    <div class="cal-day-header">Sat</div>
+                </div>
+            </section>
+
+            <div class="toast-container" id="toast-container"></div>
+        </div>
+
+        <div class="day-detail-overlay" id="day-detail">
+            <h3>Tasks for <span id="detail-date"></span></h3>
+            <div id="detail-list"></div>
+            <button id="close-detail">Close</button>
+        </div>
+
+        <div id="event-overlay"></div>
+        <canvas id="confetti-canvas"></canvas>
+    </div>
+
+    <!-- UNDERGROUND CAVE BIOME -->
+    <div id="cave-section">
+        <canvas id="cave-canvas"></canvas>
+        <div id="cave-entity-layer"></div>
+        <div id="pomodoro-container">
+            <div class="pomo-tomato" id="pomo-tomato">
+                <svg viewBox="0 0 160 160" class="pomo-svg">
+                    <path d="M72 28 Q75 10 80 8 Q85 10 88 28" fill="#2d8a4e" stroke="#1e6b3a" stroke-width="1" />
+                    <ellipse cx="80" cy="28" rx="6" ry="3" fill="#3aad62" />
+                    <path d="M86 22 Q100 12 105 18 Q100 26 88 26" fill="#4ade80" stroke="#22c55e" stroke-width="0.5" />
+                    <ellipse cx="80" cy="90" rx="55" ry="52" fill="#ef4444" />
+                    <ellipse cx="80" cy="88" rx="52" ry="48" fill="#f87171" />
+                    <ellipse cx="62" cy="72" rx="14" ry="10" fill="rgba(255,255,255,0.2)"
+                        transform="rotate(-15 62 72)" />
+                    <circle cx="65" cy="85" r="4" fill="#1a1a2e" />
+                    <circle cx="95" cy="85" r="4" fill="#1a1a2e" />
+                    <circle cx="66.5" cy="83.5" r="1.5" fill="white" />
+                    <circle cx="96.5" cy="83.5" r="1.5" fill="white" />
+                    <ellipse cx="55" cy="95" rx="8" ry="5" fill="rgba(255,150,150,0.4)" />
+                    <ellipse cx="105" cy="95" rx="8" ry="5" fill="rgba(255,150,150,0.4)" />
+                    <path d="M68 100 Q80 112 92 100" fill="none" stroke="#1a1a2e" stroke-width="2.5"
+                        stroke-linecap="round" />
+                </svg>
+                <div class="pomo-timer" id="pomo-timer">25:00</div>
+                <button class="pomo-adj-btn btn-minus" id="pomo-minus" title="-5 min">-</button>
+                <button class="pomo-adj-btn btn-plus" id="pomo-plus" title="+5 min">+</button>
+                <div class="pomo-label" id="pomo-label">Click to start focus!</div>
+                <div class="pomo-controls">
+                    <button class="pomo-btn" id="pomo-start">🍅 Start</button>
+                    <button class="pomo-btn pomo-reset" id="pomo-reset">↺ Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js?v=18"></script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <style>
+    @keyframes mistFloat { 0%,100%{opacity:0.15; transform:translateX(0)} 50%{opacity:0.25; transform:translateX(8px)} }
+    .mist { animation: mistFloat 10s ease-in-out infinite; }
+    .mist2 { animation: mistFloat 12s ease-in-out infinite 3s; }
+  </style>
+  <!-- Far mountain -->
+  <polygon points="0,80 30,30 60,55 90,20 130,50 170,25 200,80" fill="#1a3a25" opacity="0.5"/>
+  <!-- Mid mountain -->
+  <polygon points="0,80 50,25 80,50 120,15 160,45 200,80" fill="#1d4a2e"/>
+  <!-- Snow caps -->
+  <polygon points="120,15 115,25 125,25" fill="white" opacity="0.6"/>
+  <polygon points="50,25 45,33 55,33" fill="white" opacity="0.5"/>
+  <!-- Near mountain -->
+  <polygon points="0,80 40,40 70,60 100,35 140,55 180,38 200,80" fill="#245a38"/>
+  <!-- Snow on near -->
+  <polygon points="100,35 95,43 105,43" fill="white" opacity="0.5"/>
+  <polygon points="180,38 175,46 185,46" fill="white" opacity="0.4"/>
+  <!-- Forest at base -->
+  <ellipse cx="30" cy="75" rx="15" ry="10" fill="#1a4a28" opacity="0.7"/>
+  <ellipse cx="60" cy="73" rx="12" ry="9" fill="#1a4a28" opacity="0.6"/>
+  <ellipse cx="100" cy="76" rx="18" ry="10" fill="#1a4a28" opacity="0.7"/>
+  <ellipse cx="150" cy="74" rx="14" ry="9" fill="#1a4a28" opacity="0.6"/>
+  <ellipse cx="180" cy="76" rx="12" ry="8" fill="#1a4a28" opacity="0.7"/>
+  <!-- Mist layers -->
+  <ellipse cx="80" cy="55" rx="50" ry="8" fill="white" class="mist"/>
+  <ellipse cx="140" cy="60" rx="40" ry="6" fill="white" class="mist2"/>
+</svg>

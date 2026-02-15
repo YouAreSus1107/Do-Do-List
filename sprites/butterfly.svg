@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60" width="80" height="60">
+  <style>
+    @keyframes flapLeft { 0%,100%{transform:rotateY(0deg) scaleX(1)} 50%{transform:rotateY(60deg) scaleX(0.4)} }
+    @keyframes flapRight { 0%,100%{transform:rotateY(0deg) scaleX(1)} 50%{transform:rotateY(-60deg) scaleX(0.4)} }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+    .left-wing { animation: flapLeft 0.6s ease-in-out infinite; transform-origin: 40px 30px; }
+    .right-wing { animation: flapRight 0.6s ease-in-out infinite; transform-origin: 40px 30px; }
+    .butterfly-body { animation: bob 1.2s ease-in-out infinite; }
+  </style>
+  <g class="butterfly-body">
+    <!-- Left wings -->
+    <g class="left-wing">
+      <ellipse cx="25" cy="22" rx="18" ry="14" fill="#E879A8" opacity="0.85"/>
+      <ellipse cx="25" cy="22" rx="12" ry="9" fill="#F0A0C0" opacity="0.7"/>
+      <ellipse cx="25" cy="22" rx="6" ry="4.5" fill="#FFD0E0" opacity="0.6"/>
+      <ellipse cx="22" cy="40" rx="12" ry="10" fill="#D468A0" opacity="0.8"/>
+      <ellipse cx="22" cy="40" rx="7" ry="6" fill="#E890B8" opacity="0.6"/>
+    </g>
+    <!-- Right wings -->
+    <g class="right-wing">
+      <ellipse cx="55" cy="22" rx="18" ry="14" fill="#E879A8" opacity="0.85"/>
+      <ellipse cx="55" cy="22" rx="12" ry="9" fill="#F0A0C0" opacity="0.7"/>
+      <ellipse cx="55" cy="22" rx="6" ry="4.5" fill="#FFD0E0" opacity="0.6"/>
+      <ellipse cx="58" cy="40" rx="12" ry="10" fill="#D468A0" opacity="0.8"/>
+      <ellipse cx="58" cy="40" rx="7" ry="6" fill="#E890B8" opacity="0.6"/>
+    </g>
+    <!-- Body -->
+    <ellipse cx="40" cy="30" rx="3" ry="14" fill="#3a2020"/>
+    <!-- Head -->
+    <circle cx="40" cy="14" r="3.5" fill="#3a2020"/>
+    <!-- Eyes -->
+    <circle cx="38.5" cy="13" r="1" fill="#FFD700"/>
+    <circle cx="41.5" cy="13" r="1" fill="#FFD700"/>
+    <!-- Antennae -->
+    <path d="M38 11 Q34 3 30 5" fill="none" stroke="#3a2020" stroke-width="1" stroke-linecap="round"/>
+    <circle cx="30" cy="5" r="1.5" fill="#E879A8"/>
+    <path d="M42 11 Q46 3 50 5" fill="none" stroke="#3a2020" stroke-width="1" stroke-linecap="round"/>
+    <circle cx="50" cy="5" r="1.5" fill="#E879A8"/>
+  </g>
+</svg>

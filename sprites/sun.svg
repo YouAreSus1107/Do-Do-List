@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <style>
+    @keyframes sunPulse { 0%,100%{transform:scale(1); opacity:1} 50%{transform:scale(1.05); opacity:0.95} }
+    @keyframes raysSpin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+    @keyframes shimmer { 0%,100%{opacity:0.3} 50%{opacity:0.6} }
+    .sun-core { animation: sunPulse 4s ease-in-out infinite; transform-origin: 50px 50px; }
+    .sun-rays { animation: raysSpin 30s linear infinite; transform-origin: 50px 50px; }
+    .sun-shimmer { animation: shimmer 3s ease-in-out infinite; }
+  </style>
+  <!-- Outer glow -->
+  <circle cx="50" cy="50" r="48" fill="url(#sunGlow)" class="sun-shimmer"/>
+  <!-- Rays -->
+  <g class="sun-rays">
+    <line x1="50" y1="5" x2="50" y2="18" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <line x1="50" y1="82" x2="50" y2="95" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <line x1="5" y1="50" x2="18" y2="50" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <line x1="82" y1="50" x2="95" y2="50" stroke="#FFD700" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+    <line x1="16" y1="16" x2="25" y2="25" stroke="#FFA500" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="75" y1="75" x2="84" y2="84" stroke="#FFA500" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="84" y1="16" x2="75" y2="25" stroke="#FFA500" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+    <line x1="25" y1="75" x2="16" y2="84" stroke="#FFA500" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+    <!-- Extra rays -->
+    <line x1="50" y1="8" x2="50" y2="14" stroke="#FFE44D" stroke-width="1.5" stroke-linecap="round" opacity="0.4" transform="rotate(22.5 50 50)"/>
+    <line x1="50" y1="8" x2="50" y2="14" stroke="#FFE44D" stroke-width="1.5" stroke-linecap="round" opacity="0.4" transform="rotate(67.5 50 50)"/>
+    <line x1="50" y1="8" x2="50" y2="14" stroke="#FFE44D" stroke-width="1.5" stroke-linecap="round" opacity="0.4" transform="rotate(112.5 50 50)"/>
+    <line x1="50" y1="8" x2="50" y2="14" stroke="#FFE44D" stroke-width="1.5" stroke-linecap="round" opacity="0.4" transform="rotate(157.5 50 50)"/>
+    <line x1="50" y1="8" x2="50" y2="14" stroke="#FFE44D" stroke-width="1.5" stroke-linecap="round" opacity="0.4" transform="rotate(202.5 50 50)"/>
+    <line x1="50" y1="8" x2="50" y2="14" stroke="#FFE44D" stroke-width="1.5" stroke-linecap="round" opacity="0.4" transform="rotate(247.5 50 50)"/>
+    <line x1="50" y1="8" x2="50" y2="14" stroke="#FFE44D" stroke-width="1.5" stroke-linecap="round" opacity="0.4" transform="rotate(292.5 50 50)"/>
+    <line x1="50" y1="8" x2="50" y2="14" stroke="#FFE44D" stroke-width="1.5" stroke-linecap="round" opacity="0.4" transform="rotate(337.5 50 50)"/>
+  </g>
+  <!-- Core -->
+  <g class="sun-core">
+    <circle cx="50" cy="50" r="22" fill="#FFD700"/>
+    <circle cx="50" cy="50" r="18" fill="#FFE44D"/>
+    <circle cx="46" cy="46" r="8" fill="#FFF4B0" opacity="0.5"/>
+    <!-- Face -->
+    <circle cx="43" cy="46" r="2" fill="#E8A000"/>
+    <circle cx="57" cy="46" r="2" fill="#E8A000"/>
+    <path d="M43 54 Q50 60 57 54" fill="none" stroke="#E8A000" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <defs>
+    <radialGradient id="sunGlow">
+      <stop offset="30%" stop-color="#FFD700" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#FFD700" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>

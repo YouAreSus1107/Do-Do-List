@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+  <style>
+    @keyframes wingBuzz { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(0.3)} }
+    @keyframes beeBob { 0%,100%{transform:translate(0,0)} 25%{transform:translate(2px,-3px)} 75%{transform:translate(-2px,2px)} }
+    .bee-wing { animation: wingBuzz 0.1s linear infinite; }
+    .bee-body { animation: beeBob 1.5s ease-in-out infinite; }
+  </style>
+  <g class="bee-body">
+    <!-- Wings -->
+    <ellipse cx="16" cy="12" rx="7" ry="4" fill="rgba(200,220,255,0.5)" class="bee-wing" style="transform-origin:20px 15px"/>
+    <ellipse cx="24" cy="12" rx="7" ry="4" fill="rgba(200,220,255,0.5)" class="bee-wing" style="transform-origin:20px 15px"/>
+    <!-- Body -->
+    <ellipse cx="20" cy="22" rx="8" ry="10" fill="#F5C518"/>
+    <!-- Stripes -->
+    <rect x="12" y="18" width="16" height="3" rx="1" fill="#1a1a0a"/>
+    <rect x="12" y="24" width="16" height="3" rx="1" fill="#1a1a0a"/>
+    <!-- Head -->
+    <circle cx="20" cy="10" r="5" fill="#1a1a0a"/>
+    <!-- Eyes -->
+    <circle cx="18" cy="9" r="1.5" fill="white"/>
+    <circle cx="22" cy="9" r="1.5" fill="white"/>
+    <circle cx="17.8" cy="9" r="0.7" fill="#1a1a0a"/>
+    <circle cx="21.8" cy="9" r="0.7" fill="#1a1a0a"/>
+    <!-- Antennae -->
+    <line x1="18" y1="6" x2="15" y2="2" stroke="#1a1a0a" stroke-width="0.8"/>
+    <circle cx="15" cy="2" r="1" fill="#1a1a0a"/>
+    <line x1="22" y1="6" x2="25" y2="2" stroke="#1a1a0a" stroke-width="0.8"/>
+    <circle cx="25" cy="2" r="1" fill="#1a1a0a"/>
+    <!-- Stinger -->
+    <polygon points="20,32 18,35 22,35" fill="#C8A010"/>
+  </g>
+</svg>

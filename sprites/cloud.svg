@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" width="120" height="60">
+  <style>
+    @keyframes cloudDrift { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
+    @keyframes puff { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+    .cloud-body { animation: cloudDrift 8s ease-in-out infinite; }
+    .puff1 { animation: puff 5s ease-in-out infinite; transform-origin: 60px 30px; }
+    .puff2 { animation: puff 6s ease-in-out infinite 1s; transform-origin: 40px 28px; }
+  </style>
+  <g class="cloud-body">
+    <g class="puff1">
+      <ellipse cx="60" cy="35" rx="40" ry="16" fill="white" opacity="0.85"/>
+    </g>
+    <g class="puff2">
+      <ellipse cx="40" cy="28" rx="25" ry="18" fill="white" opacity="0.9"/>
+    </g>
+    <ellipse cx="75" cy="28" rx="22" ry="16" fill="white" opacity="0.88"/>
+    <ellipse cx="55" cy="22" rx="20" ry="15" fill="#F8F8FF" opacity="0.92"/>
+    <ellipse cx="68" cy="20" rx="15" ry="12" fill="#F0F4FF" opacity="0.85"/>
+    <!-- Subtle highlights -->
+    <ellipse cx="45" cy="20" rx="10" ry="7" fill="white" opacity="0.5"/>
+    <ellipse cx="65" cy="16" rx="8" ry="5" fill="white" opacity="0.4"/>
+    <!-- Shadow underside -->
+    <ellipse cx="60" cy="40" rx="35" ry="8" fill="#D0D8E8" opacity="0.3"/>
+  </g>
+</svg>

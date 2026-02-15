@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" width="120" height="100">
+  <style>
+    .body { fill: #8B6914; }
+    .belly { fill: #C4A35A; }
+    .antler { fill: #5C4033; stroke: #4A3228; stroke-width: 1; }
+    .eye { fill: #1a1a1a; }
+    .nose { fill: #2a1a0a; }
+    .leg { fill: #6B4F12; }
+    .tail { fill: #A07818; }
+    .ear { fill: #A07818; }
+    .ear-inner { fill: #D4A76A; }
+    @keyframes breathe { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.03)} }
+    @keyframes earTwitch { 0%,90%,100%{transform:rotate(0deg)} 93%{transform:rotate(-15deg)} 96%{transform:rotate(5deg)} }
+    @keyframes tailWag { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(10deg)} }
+    @keyframes legStep { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(8deg)} 75%{transform:rotate(-8deg)} }
+    .body-group { animation: breathe 3s ease-in-out infinite; transform-origin: 60px 60px; }
+    .ear-group { animation: earTwitch 4s ease-in-out infinite; transform-origin: 30px 20px; }
+    .tail-group { animation: tailWag 2s ease-in-out infinite; transform-origin: 95px 40px; }
+    .front-leg { animation: legStep 1.5s ease-in-out infinite; transform-origin: 45px 65px; }
+    .back-leg { animation: legStep 1.5s ease-in-out infinite 0.4s; transform-origin: 78px 65px; }
+  </style>
+  <g class="body-group">
+    <!-- Body -->
+    <ellipse cx="62" cy="50" rx="28" ry="18" class="body"/>
+    <ellipse cx="62" cy="54" rx="22" ry="12" class="belly"/>
+    <!-- Head -->
+    <circle cx="32" cy="32" r="14" class="body"/>
+    <ellipse cx="30" cy="36" rx="8" ry="6" class="belly"/>
+    <!-- Eye -->
+    <circle cx="27" cy="29" r="2.5" class="eye"/>
+    <circle cx="26.5" cy="28.5" r="0.8" fill="white" opacity="0.7"/>
+    <!-- Nose -->
+    <ellipse cx="20" cy="34" rx="3" ry="2" class="nose"/>
+    <!-- Mouth -->
+    <path d="M20 36 Q22 38 24 36" fill="none" stroke="#4a3228" stroke-width="0.8"/>
+    <!-- Ears -->
+    <g class="ear-group">
+      <ellipse cx="28" cy="18" rx="4" ry="8" class="ear" transform="rotate(-20 28 18)"/>
+      <ellipse cx="28" cy="18" rx="2.5" ry="5" class="ear-inner" transform="rotate(-20 28 18)"/>
+      <ellipse cx="38" cy="18" rx="4" ry="8" class="ear" transform="rotate(10 38 18)"/>
+      <ellipse cx="38" cy="18" rx="2.5" ry="5" class="ear-inner" transform="rotate(10 38 18)"/>
+    </g>
+    <!-- Antlers -->
+    <g class="antler">
+      <path d="M30 18 L26 6 L22 10 M26 6 L28 2" fill="none" stroke-width="2" stroke-linecap="round"/>
+      <path d="M36 16 L40 4 L44 8 M40 4 L38 0" fill="none" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <!-- Legs -->
+    <g class="front-leg">
+      <rect x="42" y="64" width="5" height="22" rx="2" class="leg"/>
+      <rect x="50" y="64" width="5" height="22" rx="2" class="leg"/>
+    </g>
+    <g class="back-leg">
+      <rect x="72" y="64" width="5" height="22" rx="2" class="leg"/>
+      <rect x="80" y="64" width="5" height="22" rx="2" class="leg"/>
+    </g>
+    <!-- Hooves -->
+    <ellipse cx="44.5" cy="87" rx="3.5" ry="2" fill="#3a2a0a"/>
+    <ellipse cx="52.5" cy="87" rx="3.5" ry="2" fill="#3a2a0a"/>
+    <ellipse cx="74.5" cy="87" rx="3.5" ry="2" fill="#3a2a0a"/>
+    <ellipse cx="82.5" cy="87" rx="3.5" ry="2" fill="#3a2a0a"/>
+    <!-- Tail -->
+    <g class="tail-group">
+      <ellipse cx="92" cy="42" rx="5" ry="4" class="tail" transform="rotate(-20 92 42)"/>
+    </g>
+  </g>
+</svg>

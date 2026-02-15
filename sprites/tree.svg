@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" width="100" height="120">
+  <style>
+    @keyframes canopySway { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
+    @keyframes leafRustle { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+    .canopy { animation: canopySway 5s ease-in-out infinite; transform-origin: 50px 40px; }
+    .leaves { animation: leafRustle 3s ease-in-out infinite; transform-origin: 50px 35px; }
+  </style>
+  <!-- Trunk -->
+  <rect x="42" y="55" width="16" height="55" rx="3" fill="#6B4226"/>
+  <rect x="44" y="55" width="4" height="50" rx="1" fill="#7B5236" opacity="0.5"/>
+  <rect x="52" y="60" width="3" height="40" rx="1" fill="#5B3216" opacity="0.4"/>
+  <!-- Roots -->
+  <path d="M42 108 Q35 112 30 110" fill="none" stroke="#5B3216" stroke-width="3" stroke-linecap="round"/>
+  <path d="M58 108 Q65 112 70 110" fill="none" stroke="#5B3216" stroke-width="3" stroke-linecap="round"/>
+  <!-- Branches -->
+  <path d="M42 70 Q30 65 25 55" fill="none" stroke="#6B4226" stroke-width="3" stroke-linecap="round"/>
+  <path d="M58 68 Q70 62 75 52" fill="none" stroke="#6B4226" stroke-width="3" stroke-linecap="round"/>
+  <!-- Canopy -->
+  <g class="canopy">
+    <g class="leaves">
+      <ellipse cx="50" cy="35" rx="35" ry="28" fill="#2D7A3A"/>
+      <ellipse cx="35" cy="30" rx="20" ry="18" fill="#38914A"/>
+      <ellipse cx="65" cy="30" rx="20" ry="18" fill="#38914A"/>
+      <ellipse cx="50" cy="20" rx="22" ry="16" fill="#45A55A"/>
+      <ellipse cx="30" cy="40" rx="15" ry="12" fill="#2D7A3A" opacity="0.8"/>
+      <ellipse cx="70" cy="40" rx="15" ry="12" fill="#2D7A3A" opacity="0.8"/>
+      <!-- Highlight clusters -->
+      <circle cx="40" cy="22" r="6" fill="#55B56A" opacity="0.6"/>
+      <circle cx="58" cy="18" r="5" fill="#55B56A" opacity="0.5"/>
+      <circle cx="50" cy="28" r="4" fill="#65C57A" opacity="0.4"/>
+      <!-- Depth shadows -->
+      <ellipse cx="45" cy="42" rx="10" ry="6" fill="#1D6A2A" opacity="0.4"/>
+      <ellipse cx="55" cy="38" rx="8" ry="5" fill="#1D6A2A" opacity="0.3"/>
+    </g>
+  </g>
+</svg>

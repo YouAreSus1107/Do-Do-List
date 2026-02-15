@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 60" width="70" height="60">
+  <style>
+    @keyframes foxBreath { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.02)} }
+    @keyframes tailSway { 0%,100%{transform:rotate(-10deg)} 50%{transform:rotate(15deg)} }
+    @keyframes earPerk { 0%,85%,100%{transform:rotate(0deg)} 90%{transform:rotate(-10deg)} 95%{transform:rotate(5deg)} }
+    .fox-body { animation: foxBreath 2.5s ease-in-out infinite; transform-origin: 35px 40px; }
+    .fox-tail { animation: tailSway 2s ease-in-out infinite; transform-origin: 55px 35px; }
+    .fox-ears { animation: earPerk 5s ease-in-out infinite; transform-origin: 18px 15px; }
+  </style>
+  <g class="fox-body">
+    <!-- Tail -->
+    <g class="fox-tail">
+      <path d="M54 32 Q68 20 65 35 Q62 45 55 38" fill="#E86A20"/>
+      <path d="M63 32 Q62 38 58 36" fill="#F8F0E0" opacity="0.8"/>
+    </g>
+    <!-- Body -->
+    <ellipse cx="38" cy="38" rx="20" ry="12" fill="#E86A20"/>
+    <!-- Belly -->
+    <ellipse cx="36" cy="42" rx="14" ry="7" fill="#F8E8D0"/>
+    <!-- Legs -->
+    <rect x="24" y="48" width="4" height="10" rx="2" fill="#C85A18"/>
+    <rect x="32" y="48" width="4" height="10" rx="2" fill="#C85A18"/>
+    <rect x="44" y="48" width="4" height="10" rx="2" fill="#C85A18"/>
+    <rect x="50" y="48" width="4" height="10" rx="2" fill="#C85A18"/>
+    <!-- Paws -->
+    <ellipse cx="26" cy="58.5" rx="3" ry="1.5" fill="#2a1a0a"/>
+    <ellipse cx="34" cy="58.5" rx="3" ry="1.5" fill="#2a1a0a"/>
+    <ellipse cx="46" cy="58.5" rx="3" ry="1.5" fill="#2a1a0a"/>
+    <ellipse cx="52" cy="58.5" rx="3" ry="1.5" fill="#2a1a0a"/>
+    <!-- Head -->
+    <path d="M10 30 Q8 22 15 18 Q22 14 28 18 Q30 22 28 30 Q22 36 15 34 Z" fill="#E86A20"/>
+    <!-- Face -->
+    <path d="M10 28 Q12 22 18 22 Q22 28 18 32 Z" fill="#F8E8D0"/>
+    <!-- Eyes -->
+    <circle cx="16" cy="24" r="2" fill="#2a1a0a"/>
+    <circle cx="15.5" cy="23.5" r="0.6" fill="white" opacity="0.7"/>
+    <!-- Nose -->
+    <ellipse cx="10" cy="28" rx="2" ry="1.5" fill="#1a0a0a"/>
+    <!-- Mouth -->
+    <path d="M10 29.5 Q12 31 14 30" fill="none" stroke="#1a0a0a" stroke-width="0.6"/>
+    <!-- Ears -->
+    <g class="fox-ears">
+      <polygon points="14,18 10,6 18,14" fill="#E86A20"/>
+      <polygon points="15,16 12,9 17,14" fill="#F8E8D0" opacity="0.6"/>
+      <polygon points="22,16 20,4 26,12" fill="#E86A20"/>
+      <polygon points="22,14 21,8 25,12" fill="#F8E8D0" opacity="0.6"/>
+    </g>
+    <!-- Whiskers -->
+    <line x1="9" y1="27" x2="3" y2="25" stroke="#C85A18" stroke-width="0.5" opacity="0.5"/>
+    <line x1="9" y1="28.5" x2="3" y2="28.5" stroke="#C85A18" stroke-width="0.5" opacity="0.5"/>
+  </g>
+</svg>

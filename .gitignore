@@ -1,0 +1,18 @@
+# System Files
+Thumbs.db
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log
+
+# IDE
+.vscode/
+.idea/
+
+# Environment Variables (Keep local secrets safe!)
+.env
+
+# Build outputs (if any in future)
+dist/
+build/

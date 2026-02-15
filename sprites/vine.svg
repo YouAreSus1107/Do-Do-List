@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50" height="50">
+  <style>
+    @keyframes vineSway { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(3deg)} }
+    @keyframes vineGrow { 0%{stroke-dashoffset:80} 100%{stroke-dashoffset:0} }
+    .vine { animation: vineSway 5s ease-in-out infinite; transform-origin: 25px 0; }
+  </style>
+  <g class="vine">
+    <!-- Main vine -->
+    <path d="M25 0 Q20 10 28 18 Q35 25 22 32 Q15 38 25 48" fill="none" stroke="#2A7A2A" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Leaves -->
+    <path d="M24 10 Q18 6 16 10 Q18 12 24 10" fill="#3A9A3A"/>
+    <path d="M30 18 Q36 14 38 18 Q36 20 30 18" fill="#4AAA4A"/>
+    <path d="M20 26 Q14 22 12 26 Q14 28 20 26" fill="#3A9A3A"/>
+    <path d="M28 34 Q34 30 36 34 Q34 36 28 34" fill="#4AAA4A"/>
+    <path d="M22 42 Q16 38 14 42 Q16 44 22 42" fill="#3A9A3A"/>
+    <!-- Tendrils -->
+    <path d="M16 10 Q12 8 13 5" fill="none" stroke="#2A7A2A" stroke-width="0.8" stroke-linecap="round"/>
+    <path d="M38 18 Q42 16 41 13" fill="none" stroke="#2A7A2A" stroke-width="0.8" stroke-linecap="round"/>
+    <path d="M12 26 Q8 24 9 21" fill="none" stroke="#2A7A2A" stroke-width="0.8" stroke-linecap="round"/>
+  </g>
+</svg>

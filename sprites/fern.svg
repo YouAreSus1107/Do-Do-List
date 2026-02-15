@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50" height="50">
+  <style>
+    @keyframes fernSway { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
+    .fern { animation: fernSway 3.5s ease-in-out infinite; transform-origin: 25px 50px; }
+  </style>
+  <g class="fern">
+    <!-- Main stem -->
+    <path d="M25 50 Q24 35 25 10" fill="none" stroke="#2A6B2A" stroke-width="2" stroke-linecap="round"/>
+    <!-- Left fronds -->
+    <path d="M24 42 Q16 38 12 40 Q16 36 24 40" fill="#3A8A3A"/>
+    <path d="M24 36 Q14 30 10 32 Q14 28 24 34" fill="#3A8A3A"/>
+    <path d="M24 30 Q14 24 10 26 Q14 22 24 28" fill="#4A9A4A"/>
+    <path d="M24 24 Q16 18 13 20 Q16 16 24 22" fill="#4A9A4A"/>
+    <path d="M24 18 Q18 14 16 15 Q18 12 24 16" fill="#5AAA5A"/>
+    <path d="M25 14 Q22 10 20 11 Q22 9 25 12" fill="#5AAA5A"/>
+    <!-- Right fronds -->
+    <path d="M26 42 Q34 38 38 40 Q34 36 26 40" fill="#3A8A3A"/>
+    <path d="M26 36 Q36 30 40 32 Q36 28 26 34" fill="#3A8A3A"/>
+    <path d="M26 30 Q36 24 40 26 Q36 22 26 28" fill="#4A9A4A"/>
+    <path d="M26 24 Q34 18 37 20 Q34 16 26 22" fill="#4A9A4A"/>
+    <path d="M26 18 Q32 14 34 15 Q32 12 26 16" fill="#5AAA5A"/>
+    <path d="M25 14 Q28 10 30 11 Q28 9 25 12" fill="#5AAA5A"/>
+    <!-- Tip curl -->
+    <path d="M25 10 Q24 6 26 5 Q27 7 25 10" fill="#5AAA5A"/>
+  </g>
+</svg>
