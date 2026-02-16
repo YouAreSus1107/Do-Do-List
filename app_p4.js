@@ -217,10 +217,14 @@ class CaveEntity {
                     this.threadLen = Math.max(0, this.threadLen - 0.8);
                     this.y = this.baseY + this.threadLen;
                 } else {
-                    // idle/resting — gentle sway
-                    this.y = this.baseY + this.threadLen + Math.sin(Date.now() * 0.002) * 1.5;
+                    // idle/resting — gentle sway (Fixed Jitter)
+                    // Use a consistent time-based sine wave, no randomness in Y
+                    this.y = this.baseY + this.threadLen + Math.sin(Date.now() * 0.0015 + this.x * 0.01) * 2;
                 }
-                if (this.threadEl) this.threadEl.style.height = this.threadLen + 'px';
+                if (this.threadEl) {
+                    this.threadEl.style.height = this.threadLen + 'px';
+                    this.threadEl.style.left = '50%'; // Align to center of body
+                }
                 break;
             case 'bat':
                 if (this.state === 'flying') {

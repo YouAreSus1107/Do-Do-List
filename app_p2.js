@@ -182,10 +182,40 @@ let evtCool = false;
 function triggerEvt() {
     if (evtCool || Math.random() > 0.3) return;
     evtCool = true; setTimeout(() => evtCool = false, 12000);
-    const ev = pick(EVENTS), el = document.createElement('div');
-    el.className = 'random-event pop-in';
-    el.innerHTML = `<div class="event-icon">&#10024;</div><div class="event-text">${ev.text}</div>`;
-    const top = 20 + Math.random() * 20; el.style.top = top + '%'; el.style.left = '50%'; el.style.transform = 'translate(-50%, -50%)';
-    document.getElementById('event-overlay').appendChild(el);
-    setTimeout(() => { if (el.parentNode) el.remove(); }, ev.dur);
+    const ev = pick(EVENTS);
+    toast(ev.text);
+    if (typeof spawnEventVisuals === 'function') spawnEventVisuals(ev.type);
+}
+
+function spawnEventVisuals(type) {
+    if (document.hidden) return;
+    switch (type) {
+        case 'wind':
+            if (typeof grassBlades !== 'undefined') { grassBlades.forEach(b => b.spd *= 4); setTimeout(() => grassBlades.forEach(b => b.spd /= 4), 3000); }
+            break;
+        case 'visitor':
+            if (typeof entities !== 'undefined') entities.push(new FaunaEntity('fox'));
+            break;
+        case 'royal':
+            if (typeof entities !== 'undefined') {
+                const k = new FloraEntity('mushroom', W() * 0.5, H() * 0.6);
+                k.w *= 2.5; k.h *= 2.5; k.el.style.width = k.w + 'px'; k.el.style.height = k.h + 'px'; k.el.style.filter = 'drop-shadow(0 0 15px gold)'; k.el.style.zIndex = 100;
+                entities.push(k);
+            }
+            break;
+        case 'portal':
+            document.body.classList.add('event-portal');
+            setTimeout(() => document.body.classList.remove('event-portal'), 4000);
+            break;
+        case 'chaos':
+            if (typeof entities !== 'undefined') { for (let i = 0; i < 4; i++) setTimeout(() => entities.push(new FaunaEntity('squirrel')), i * 300); }
+            break;
+        case 'storm':
+            document.body.classList.add('event-storm');
+            setTimeout(() => document.body.classList.remove('event-storm'), 5000);
+            break;
+        case 'cosmic':
+            if (typeof fireflies !== 'undefined') { for (let i = 0; i < 15; i++) fireflies.push({ x: Math.random() * W(), y: Math.random() * H(), sz: 4, off: Math.random(), spd: 2, dx: 0, dy: 0, hue: 60 }); }
+            break;
+    }
 }

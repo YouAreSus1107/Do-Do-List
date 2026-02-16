@@ -112,15 +112,62 @@ function drawForestRegion(c, g, w) {
     c.fillStyle = '#1a4a20'; c.globalAlpha = 0.6; for (let x = 0; x < w * 0.35; x += 8 + Math.random() * 6) { const bh = 5 + Math.random() * 10; c.beginPath(); c.ellipse(x, g + 15, 4, bh, 0, Math.PI, 0); c.fill(); } c.globalAlpha = 1;
 }
 function drawNewCave(c, cx, cy) {
-    c.fillStyle = '#18181e'; c.beginPath(); c.moveTo(cx - 70, cy + 40); c.lineTo(cx - 50, cy - 40); c.lineTo(cx, cy - 65); c.lineTo(cx + 50, cy - 45); c.lineTo(cx + 80, cy + 40); c.closePath(); c.fill();
-    const g = c.createRadialGradient(cx, cy, 0, cx, cy, 70); g.addColorStop(0, '#050508'); g.addColorStop(1, '#18181e'); c.fillStyle = g; c.beginPath(); c.moveTo(cx - 55, cy + 40); c.lineTo(cx - 35, cy - 25); c.lineTo(cx, cy - 50); c.lineTo(cx + 35, cy - 30); c.lineTo(cx + 65, cy + 40); c.closePath(); c.fill();
-    c.fillStyle = '#2a2a35';[[-25, 18], [0, 25], [25, 20]].forEach(([dx, h]) => { c.beginPath(); c.moveTo(cx + dx - 6, cy - 45); c.lineTo(cx + dx, cy - 45 + h); c.lineTo(cx + dx + 6, cy - 45); c.fill(); });
+    // Dirt/Brown mound
+    c.fillStyle = '#5d4037'; c.beginPath(); c.moveTo(cx - 70, cy + 40); c.lineTo(cx - 50, cy - 40); c.lineTo(cx, cy - 65); c.lineTo(cx + 50, cy - 45); c.lineTo(cx + 80, cy + 40); c.closePath(); c.fill();
+    // Inner depth (Darker brown)
+    const g = c.createRadialGradient(cx, cy, 0, cx, cy, 70); g.addColorStop(0, '#26160c'); g.addColorStop(1, '#3e2723'); c.fillStyle = g; c.beginPath(); c.moveTo(cx - 55, cy + 40); c.lineTo(cx - 35, cy - 25); c.lineTo(cx, cy - 50); c.lineTo(cx + 35, cy - 30); c.lineTo(cx + 65, cy + 40); c.closePath(); c.fill();
+    // Stalactites/Teeth (Lighter dirt)
+    c.fillStyle = '#795548';[[-25, 18], [0, 25], [25, 20]].forEach(([dx, h]) => { c.beginPath(); c.moveTo(cx + dx - 6, cy - 45); c.lineTo(cx + dx, cy - 45 + h); c.lineTo(cx + dx + 6, cy - 45); c.fill(); });
+    // Crystals
     const cols = ['#b388ff', '#ce93d8', '#80cbc4'];[[-40, 20, 0], [-15, 25, 1], [20, 22, 2], [45, 18, 0]].forEach(([dx, h, ci]) => { c.globalAlpha = 0.7; c.fillStyle = cols[ci]; c.beginPath(); c.moveTo(cx + dx, cy + 35); c.lineTo(cx + dx + 4, cy + 35 - h); c.lineTo(cx + dx + 8, cy + 35); c.fill(); }); c.globalAlpha = 1;
 }
 
 /* ===== DOM REFS ===== */
 const $ = id => document.getElementById(id);
 const taskInput = $('task-input'), taskDate = $('task-date'), addBtn = $('add-btn'), taskList = $('task-list'), emptyState = $('empty-state'), listView = $('list-view'), calView = $('calendar-view'), btnList = $('btn-list-view'), btnCal = $('btn-calendar-view'), calTitle = $('cal-month-title'), calGrid = $('calendar-grid'), calPrev = $('cal-prev'), calNext = $('cal-next'), dayDetail = $('day-detail'), dayTitle = $('day-detail-title'), dayTasks = $('day-detail-tasks'), closeDetail = $('close-detail'), toastBox = $('toast-container'), tagEl = $('tagline');
+
+/* ===== MODAL LOGIC ===== */
+const descModal = $('desc-modal'), descInput = $('desc-input'), descSave = $('desc-save'), descCancel = $('desc-cancel');
+let currentEditingTaskId = null;
+
+function openDescModal(task) {
+    currentEditingTaskId = task.id;
+    descInput.value = task.description || '';
+    descModal.style.display = 'flex';
+    // Small timeout to allow display:flex to apply before adding class for transition
+    setTimeout(() => {
+        descModal.classList.add('active');
+        descInput.focus();
+    }, 10);
+}
+
+function closeDescModal() {
+    descModal.classList.remove('active');
+    setTimeout(() => {
+        descModal.style.display = 'none';
+        currentEditingTaskId = null;
+    }, 300);
+}
+
+if (descCancel) descCancel.addEventListener('click', closeDescModal);
+if (descSave) descSave.addEventListener('click', () => {
+    if (!currentEditingTaskId) return;
+    const task = tasks.find(t => t.id === currentEditingTaskId);
+    if (task) {
+        task.description = descInput.value.trim();
+        save();
+        if (window.saveCloudTask) window.saveCloudTask(task); // Sync
+        renderTasks(); // update UI to show icon
+        renderCal(); // update calendar view if needed
+        toast('Description updated! 📝');
+    }
+    closeDescModal();
+});
+
+// Close on outside click
+if (descModal) descModal.addEventListener('click', (e) => {
+    if (e.target === descModal) closeDescModal();
+});
 
 /* ===== TASK CRUD ===== */
 function addTask() {
@@ -172,11 +219,25 @@ function renderTasks() {
         // No entrance animation for completed tasks
         if (!task.completed) c.style.animationDelay = `${i * 0.06}s`;
         else c.style.animation = 'none';
-        c.innerHTML = `<span class="drag-handle">&#x2807;</span><img src="${src}" class="task-shape-sprite" alt="" draggable="false"><label class="task-checkbox"><input type="checkbox" ${task.completed ? 'checked' : ''}><span class="checkmark"></span></label><span class="task-text">${esc(task.text)}</span>${task.date ? `<span class="task-date-badge">${fmtDate(task.date)}</span>` : ''}<div class="task-actions"><button class="task-style-btn" title="Toggle Style"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></button><button class="task-delete" title="Delete"><svg width="14" height="14" viewBox="0 0 14 14"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>`;
+
+        // Tooltip & Icon
+        const descIndicator = task.description ?
+            `<div class="task-desc-icon">📝<div class="task-tooltip">${esc(task.description)}</div></div>`
+            : '';
+
+        c.innerHTML = `<span class="drag-handle">&#x2807;</span><img src="${src}" class="task-shape-sprite" alt="" draggable="false"><label class="task-checkbox"><input type="checkbox" ${task.completed ? 'checked' : ''}><span class="checkmark"></span></label><span class="task-text">${esc(task.text)}</span>${descIndicator}${task.date ? `<span class="task-date-badge">${fmtDate(task.date)}</span>` : ''}<div class="task-actions"><button class="task-style-btn" title="Toggle Style"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></button><button class="task-delete" title="Delete"><svg width="14" height="14" viewBox="0 0 14 14"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>`;
         c.querySelector('input[type="checkbox"]').addEventListener('change', () => toggleTask(task.id));
         c.querySelector('.task-style-btn').addEventListener('click', e => { e.stopPropagation(); toggleTaskStyle(task.id); });
         c.querySelector('.task-delete').addEventListener('click', e => { e.stopPropagation(); deleteTask(task.id); });
+
+        // Right Click for Description
+        c.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            openDescModal(task);
+        });
+
         c.addEventListener('mousedown', e => {
+            if (e.button !== 0) return; // Only left click drags
             if (e.target.closest('.task-checkbox') || e.target.closest('.task-delete') || e.target.closest('.task-style-btn')) return;
             e.preventDefault();
             const r = c.getBoundingClientRect(); grabOff = { x: e.clientX - r.left, y: e.clientY - r.top };
@@ -196,7 +257,7 @@ function renderTasks() {
                 }
                 if (!grabCard) return; c.style.opacity = ''; let tvx = 0, tvy = 0; if (velHistory.length >= 2) { const a = velHistory[0], b = velHistory[velHistory.length - 1], dt = Math.max(1, b.t - a.t); tvx = (b.x - a.x) / dt * 16; tvy = (b.y - a.y) / dt * 16; } const speed = Math.sqrt(tvx * tvx + tvy * tvy);
 
-                if (speed > THROW_THRESH && !grabCard.task.db_id) { // Only throw if not synced/important? Or handle throw delete.
+                if (speed > THROW_THRESH) { // Allow throw delete for all tasks
                     // THROW
                     grabCard.vx = tvx; grabCard.vy = tvy; grabCard.rv = (tvx + tvy) * 0.3; grabCard.grounded = false; grabCard.el.classList.remove('grabbed'); grabCard.el.classList.add('thrown'); grabCard.el.style.pointerEvents = 'auto';
                     tasks = tasks.filter(t => t.id !== task.id);
@@ -268,8 +329,22 @@ function showDay(ds) {
         } else {
             dt.forEach(t => {
                 const el = document.createElement('div'); el.className = 'day-task-item';
-                el.innerHTML = `<img src="${SHAPE_SPRITES[t.shape]}" alt="" draggable="false"><span style="${t.completed ? 'text-decoration:line-through;opacity:0.6' : ''}">${esc(t.text)}</span><button class="day-task-del" title="Delete">&times;</button>`;
-                el.addEventListener('click', () => { toggleTask(t.id); renderDayList(); });
+                // Tooltip & Icon
+                const descIndicator = t.description ?
+                    `<div class="task-desc-icon">📝<div class="task-tooltip">${esc(t.description)}</div></div>`
+                    : '';
+
+                el.innerHTML = `<img src="${SHAPE_SPRITES[t.shape]}" alt="" draggable="false"><span style="${t.completed ? 'text-decoration:line-through;opacity:0.6' : ''}">${esc(t.text)}</span>${descIndicator}<button class="day-task-del" title="Delete">&times;</button>`;
+                el.addEventListener('click', (e) => {
+                    // Prevent toggle if clicking description/icon
+                    if (e.target.closest('.task-desc-icon')) return;
+                    toggleTask(t.id); renderDayList();
+                });
+                // Right Click for Description
+                el.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    openDescModal(t);
+                });
                 el.querySelector('.day-task-del').addEventListener('click', (e) => {
                     e.stopPropagation();
                     if (window.deleteCloudTaskByDbId && t.db_id) window.deleteCloudTaskByDbId(t.db_id); // V18 Sync
@@ -294,7 +369,10 @@ function showDay(ds) {
     inp.focus();
 }
 
-function toast(m) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; toastBox.appendChild(t); setTimeout(() => { if (t.parentNode) t.remove(); }, 3200); }
+function toast(m) {
+    if (m && m.toLowerCase().includes('sync')) return; // SPAM FILTER
+    const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; toastBox.appendChild(t); setTimeout(() => { if (t.parentNode) t.remove(); }, 3200);
+}
 
 /* ===== FLIP CLOCK & TRICIA ===== */
 let prevDigits = '------';
