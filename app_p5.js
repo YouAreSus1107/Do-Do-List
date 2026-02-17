@@ -76,6 +76,9 @@ function handleSession(session) {
         if (loginBtn) loginBtn.style.display = 'none';
         if (logoutBtn) logoutBtn.style.display = 'inline-flex'; // Use flex for icon alignment
 
+        // Link Spotify Account
+        if (window.setUserSpotify) window.setUserSpotify(currentUser.id);
+
         // Customizable Username Logic
         if (userDisplay) {
             const firstName = currentUser.user_metadata.full_name ? currentUser.user_metadata.full_name.split(' ')[0] : 'User';
@@ -174,7 +177,10 @@ async function logout() {
         if (key && key.startsWith('sb-')) localStorage.removeItem(key);
     }
 
-    // 4. Force Reload
+    // 4. Clear Spotify State
+    if (window.clearUserSpotify) window.clearUserSpotify();
+
+    // 5. Force Reload
     window.location.replace(window.location.pathname);
 }
 

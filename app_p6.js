@@ -148,6 +148,37 @@ function onDragSticky(e) {
     dragSticky.el.style.top = ny + 'px';
 }
 
+function stopDragSticky() {
+    onStopDragSticky();
+}
+
+// Global Resize Handler for Stickies
+function resizeStickies() {
+    const sec = document.getElementById('cave-section');
+    if (!sec) return;
+    const secRect = sec.getBoundingClientRect();
+    const maxX = secRect.width - 150; // approx width
+    const maxY = secRect.height - 150; // approx height
+
+    stickyNotes.forEach(note => {
+        if (!note.el) return;
+        const noteW = note.el.offsetWidth || 150;
+        const noteH = note.el.offsetHeight || 150;
+
+        let newX = Math.max(10, Math.min(note.x, secRect.width - noteW - 10));
+        let newY = Math.max(10, Math.min(note.y, secRect.height - noteH - 10));
+
+        if (newX !== note.x || newY !== note.y) {
+            note.x = newX;
+            note.y = newY;
+            note.el.style.left = newX + 'px';
+            note.el.style.top = newY + 'px';
+            note.saveDebounced();
+        }
+    });
+}
+window.resizeStickies = resizeStickies;
+
 function onStopDragSticky() {
     if (dragSticky) {
         dragSticky.el.style.zIndex = '';

@@ -206,8 +206,8 @@ function deleteTask(id) {
 /* ===== RENDER TASKS (GROVE VIEW - TODAY ONLY) ===== */
 function renderTasks() {
     taskList.innerHTML = '';
-    const ts = todayStr();
-    // Filter: Show undated or today's tasks
+    const ts = taskDate.value || todayStr();
+    // Filter: Show undated or selected date's tasks
     const visibleTasks = tasks.filter(t => !t.date || t.date === ts);
 
     if (!visibleTasks.length) { emptyState.classList.add('visible'); const m = pick(emptyMsgs); emptyState.querySelector('.empty-sprite').src = m.s; emptyState.querySelector('h3').textContent = m.t; emptyState.querySelector('p').textContent = m.u; return; }
@@ -297,13 +297,113 @@ function renderCal() {
     const y = calendarDate.getFullYear(), m = calendarDate.getMonth(); const ms = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     calTitle.textContent = `${ms[m]} ${y}`; calGrid.querySelectorAll('.cal-cell').forEach(c => c.remove());
     const fd = new Date(y, m, 1).getDay(), dim = new Date(y, m + 1, 0).getDate(), ts = todayStr();
+    const todayDateObj = new Date(); todayDateObj.setHours(0, 0, 0, 0);
+
     for (let i = 0; i < fd; i++) { const e = document.createElement('div'); e.className = 'cal-cell empty'; calGrid.appendChild(e); }
+
     for (let d = 1; d <= dim; d++) {
-        const ds = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`; const c = document.createElement('div'); c.className = 'cal-cell'; if (ds === ts) c.classList.add('today'); const dt = tasks.filter(t => t.date === ds); if (dt.length) c.classList.add('has-tasks'); if (selectedCalDate === ds) c.classList.add('selected');
-        c.innerHTML = `<span>${d}</span>${dt.length ? `<div class="cal-task-count"><img src="sprites/fern.svg" class="cal-icon"> ${dt.length}</div>` : ''}`;
-        c.addEventListener('click', () => { selectedCalDate = ds; taskDate.value = ds; renderCal(); showDay(ds); }); calGrid.appendChild(c);
+        const c = document.createElement('div'); c.className = 'cal-cell'; c.textContent = d;
+        const ds = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const cDateObj = new Date(ds + 'T00:00:00');
+
+        // Task Counts
+        let dTasks = tasks.filter(t => t.date === ds);
+        // Sort: Incomplete first
+        dTasks.sort((a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1);
+
+        const hasIncomplete = dTasks.some(t => !t.completed);
+
+        // Expiry Logic: Past date + Incomplete tasks
+        if (cDateObj < todayDateObj && hasIncomplete) {
+            c.classList.add('expired');
+        }
+
+        if (ds === ts) c.classList.add('today');
+        if (selectedCalDate === ds) c.classList.add('selected');
+
+        if (dTasks.length) {
+            const dots = document.createElement('div'); dots.className = 'cal-dots';
+
+            // Show first 3 dots
+            dTasks.slice(0, 3).forEach(t => {
+                const dt = document.createElement('div');
+                dt.className = `cal-dot ${t.completed ? 'completed' : ''}`;
+                dots.appendChild(dt);
+            });
+
+            // More Bar
+            if (dTasks.length > 3) {
+                const dt = document.createElement('div');
+                const hiddenTasks = dTasks.slice(3);
+                const allHiddenDone = hiddenTasks.every(t => t.completed);
+                dt.className = `cal-dot more ${allHiddenDone ? 'completed' : ''}`;
+                dots.appendChild(dt);
+            }
+            c.appendChild(dots);
+        }
+
+        c.addEventListener('click', () => showDay(ds));
+
+        // Context Menu
+        c.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            showContextMenu(e.clientX, e.clientY, ds);
+        });
+
+        calGrid.appendChild(c);
     }
 }
+
+/* ===== CONTEXT MENU LOGIC ===== */
+const ctxMenu = $('context-menu'), ctxCopy = $('ctx-copy'), ctxPaste = $('ctx-paste');
+let clipboardTasks = null;
+let contextDate = null;
+
+function showContextMenu(x, y, date) {
+    if (!ctxMenu) return;
+    contextDate = date;
+    const hasTasks = tasks.some(t => t.date === date);
+
+    // Toggle state
+    if (!hasTasks) ctxCopy.classList.add('disabled'); else ctxCopy.classList.remove('disabled');
+    if (!clipboardTasks || !clipboardTasks.length) ctxPaste.classList.add('disabled'); else ctxPaste.classList.remove('disabled');
+
+    ctxMenu.style.left = `${x}px`;
+    ctxMenu.style.top = `${y}px`;
+    ctxMenu.classList.add('active');
+}
+
+function hideContextMenu() {
+    if (ctxMenu) ctxMenu.classList.remove('active');
+}
+
+// Global click to hide
+window.addEventListener('click', hideContextMenu);
+
+if (ctxCopy) ctxCopy.addEventListener('click', () => {
+    if (!contextDate) return;
+    const tasksToCopy = tasks.filter(t => t.date === contextDate);
+    if (tasksToCopy.length) {
+        clipboardTasks = JSON.parse(JSON.stringify(tasksToCopy)); // Deep copy
+        toast(`Copied ${tasksToCopy.length} tasks! 📋`);
+    }
+});
+
+if (ctxPaste) ctxPaste.addEventListener('click', () => {
+    if (!contextDate || !clipboardTasks) return;
+    let count = 0;
+    clipboardTasks.forEach(t => {
+        // Clone and re-assign ID and Date
+        const newTask = { ...t, id: genId(), date: contextDate, createdAt: Date.now() };
+        tasks.unshift(newTask);
+        if (window.saveCloudTask) window.saveCloudTask(newTask, 0);
+        count++;
+    });
+    save();
+    renderCal();
+    if (selectedCalDate) showDay(selectedCalDate); // Refresh detail view if open
+    toast(`Pasted ${count} tasks to ${fmtDate(contextDate)}! 🌱`);
+});
 function navMonth(d) { calendarDate.setMonth(calendarDate.getMonth() + d); selectedCalDate = null; dayDetail.style.display = 'none'; renderCal(); }
 
 function showDay(ds) {
@@ -414,6 +514,7 @@ let natureSeeded = false;
 function resizeAll() {
     [nc, pc, cc, lc].forEach(c => { c.width = W(); c.height = H() }); if (!landscapeSeeded) seedLandscape(); drawStaticLandscape(); if (!natureSeeded) { seedNature(); natureSeeded = true; }
     const groundY = H() - 62 - GROUND_PAD; physicsCards.forEach(c => { if (c.grounded) { c.y = groundY; c._sync(); } });
+    if (window.resizeStickies) window.resizeStickies();
 }
 function initToilet() {
     const toilet = document.getElementById('toilet'); const flood = document.getElementById('flood-wave'); if (!toilet || !flood) return;
@@ -428,7 +529,7 @@ function init() {
     resizeAll(); setTimeout(resizeAll, 200); setTimeout(resizeAll, 1000);
     window.addEventListener('resize', resizeAll); animateNature(); initMouse(); spawnInitial(); entityTimers(); tickEntities(); physicsLoop();
     addBtn.addEventListener('click', addTask); taskInput.addEventListener('keydown', e => { if (e.key === 'Enter') addTask(); });
-    btnList.addEventListener('click', () => switchView('list')); btnCal.addEventListener('click', () => switchView('calendar'));
+    btnList.addEventListener('click', () => { switchView('list'); taskDate.value = todayStr(); }); btnCal.addEventListener('click', () => switchView('calendar'));
     calPrev.addEventListener('click', () => navMonth(-1)); calNext.addEventListener('click', () => navMonth(1));
     closeDetail.addEventListener('click', () => { dayDetail.style.display = 'none'; selectedCalDate = null; renderCal(); });
     window.addEventListener('keydown', e => { if (e.target === taskInput || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return; if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) { taskInput.focus(); } });
