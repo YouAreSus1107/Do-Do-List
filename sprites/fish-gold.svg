@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 65 45" width="65" height="45">
+  <style>
+    @keyframes koiSwim { 0%,100%{transform:translateX(0)} 50%{transform:translateX(2px)} }
+    @keyframes koiTail { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(15deg)} 75%{transform:rotate(-15deg)} }
+    @keyframes koiFin { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-12deg)} }
+    .koi-body { animation: koiSwim 2.5s ease-in-out infinite; }
+    .koi-tail { animation: koiTail 1.2s ease-in-out infinite; transform-origin: 42px 18px; }
+    .koi-fin { animation: koiFin 1.8s ease-in-out infinite; transform-origin: 25px 24px; }
+  </style>
+  <g class="koi-body">
+    <!-- Tail -->
+    <g class="koi-tail">
+      <path d="M42 18 L54 8 L52 18 L54 28 Z" fill="#E8A020"/>
+      <path d="M42 18 L54 8 L52 18" fill="#F0C050" opacity="0.5"/>
+    </g>
+    <!-- Body -->
+    <ellipse cx="28" cy="18" rx="18" ry="12" fill="#F0A830"/>
+    <!-- Belly -->
+    <ellipse cx="27" cy="22" rx="13" ry="6" fill="#F8E0A0" opacity="0.7"/>
+    <!-- Koi Patches -->
+    <ellipse cx="32" cy="14" rx="5" ry="4" fill="#E06020" opacity="0.6"/>
+    <ellipse cx="22" cy="16" rx="4" ry="3" fill="#E06020" opacity="0.5"/>
+    <circle cx="35" cy="20" r="3" fill="#F8F0E0" opacity="0.4"/>
+    <!-- Dorsal Fin -->
+    <path d="M22 6 Q28 2 34 6 L28 10 Z" fill="#E8A020"/>
+    <!-- Pectoral Fin -->
+    <g class="koi-fin">
+      <path d="M22 24 Q19 32 24 29 Z" fill="#E8A020" opacity="0.8"/>
+    </g>
+    <!-- Eye -->
+    <circle cx="15" cy="15" r="3" fill="white"/>
+    <circle cx="14.5" cy="14.5" r="1.8" fill="#1a1a2e"/>
+    <circle cx="14" cy="14" r="0.6" fill="white" opacity="0.8"/>
+    <!-- Mouth -->
+    <path d="M10 18 Q11 20 13 18" fill="none" stroke="#a06020" stroke-width="0.7"/>
+    <!-- Whiskers -->
+    <line x1="10" y1="17" x2="5" y2="14" stroke="#c08030" stroke-width="0.5" opacity="0.6"/>
+    <line x1="10" y1="19" x2="5" y2="20" stroke="#c08030" stroke-width="0.5" opacity="0.6"/>
+  </g>
+</svg>

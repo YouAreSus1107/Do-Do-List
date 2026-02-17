@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 60 45" width="60" height="45">
+  <style>
+    @keyframes sqSleepBreath { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.02)} }
+    .sq-sleep { animation: sqSleepBreath 3s ease-in-out infinite; transform-origin: 25px 24px; }
+  </style>
+  <g class="sq-sleep">
+    <!-- Tail (curled over body as blanket) -->
+    <path d="M40 20 Q50 8 48 20 Q46 28 38 30 Q32 32 30 26" fill="#B06820" opacity="0.8"/>
+    <path d="M46 16 Q44 24 40 26" fill="#C88030" opacity="0.5"/>
+    <!-- Body (curled) -->
+    <ellipse cx="25" cy="24" rx="14" ry="9" fill="#B06820"/>
+    <!-- Belly -->
+    <ellipse cx="24" cy="27" rx="9" ry="5" fill="#D4A060" opacity="0.6"/>
+    <!-- Tucked paws -->
+    <ellipse cx="15" cy="31" rx="4" ry="2" fill="#A05818" opacity="0.5"/>
+    <!-- Head (tucked into body) -->
+    <circle cx="12" cy="18" r="7.5" fill="#B06820"/>
+    <!-- Cheek -->
+    <ellipse cx="10" cy="21" rx="4.5" ry="3" fill="#D4A060" opacity="0.5"/>
+    <!-- Closed Eyes -->
+    <path d="M8 16 Q10.5 14.5 12.5 16" fill="none" stroke="#2a1a0a" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- Nose -->
+    <ellipse cx="6" cy="19" rx="1.3" ry="0.9" fill="#2a1a0a"/>
+    <!-- Ears (relaxed) -->
+    <ellipse cx="9" cy="10.5" rx="2.5" ry="4.5" fill="#B06820" transform="rotate(-10 9 10.5)"/>
+    <ellipse cx="9" cy="10.5" rx="1.5" ry="2.8" fill="#D4A060" transform="rotate(-10 9 10.5)"/>
+    <ellipse cx="16" cy="10" rx="2.5" ry="4.5" fill="#B06820" transform="rotate(10 16 10)"/>
+    <ellipse cx="16" cy="10" rx="1.5" ry="2.8" fill="#D4A060" transform="rotate(10 16 10)"/>
+  </g>
+</svg>

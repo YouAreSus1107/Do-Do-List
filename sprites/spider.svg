@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 55 45" width="55" height="45">
+  <style>
+    @keyframes spiderWalk { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(8deg)} 75%{transform:rotate(-8deg)} }
+    @keyframes spiderWalkAlt { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-8deg)} 75%{transform:rotate(8deg)} }
+    @keyframes spiderBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-1px)} }
+    .sp-body { animation: spiderBob 1s ease-in-out infinite; }
+    .sp-leg-1 { animation: spiderWalk 0.6s ease-in-out infinite; transform-origin: 16px 18px; }
+    .sp-leg-2 { animation: spiderWalkAlt 0.6s ease-in-out infinite; transform-origin: 16px 18px; }
+    .sp-leg-3 { animation: spiderWalk 0.6s ease-in-out infinite 0.15s; transform-origin: 28px 18px; }
+    .sp-leg-4 { animation: spiderWalkAlt 0.6s ease-in-out infinite 0.15s; transform-origin: 28px 18px; }
+  </style>
+  <g class="sp-body">
+    <!-- Legs Left -->
+    <g class="sp-leg-1">
+      <path d="M16 16 Q8 8 3 6 Q2 8 6 12 Q10 14 16 16" fill="none" stroke="#2a2a2a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M16 20 Q8 24 3 30 Q5 31 8 28 Q12 24 16 20" fill="none" stroke="#2a2a2a" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+    <g class="sp-leg-2">
+      <path d="M16 17 Q6 12 2 14 Q2 16 6 16 Q10 16 16 17" fill="none" stroke="#2a2a2a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M16 19 Q6 22 2 26 Q4 27 7 24 Q12 22 16 19" fill="none" stroke="#2a2a2a" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+    <!-- Legs Right -->
+    <g class="sp-leg-3">
+      <path d="M28 16 Q36 8 41 6 Q42 8 38 12 Q34 14 28 16" fill="none" stroke="#2a2a2a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M28 20 Q36 24 41 30 Q39 31 36 28 Q32 24 28 20" fill="none" stroke="#2a2a2a" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+    <g class="sp-leg-4">
+      <path d="M28 17 Q38 12 42 14 Q42 16 38 16 Q34 16 28 17" fill="none" stroke="#2a2a2a" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M28 19 Q38 22 42 26 Q40 27 37 24 Q32 22 28 19" fill="none" stroke="#2a2a2a" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+    <!-- Abdomen -->
+    <ellipse cx="22" cy="22" rx="8" ry="9" fill="#3a3a3a"/>
+    <ellipse cx="22" cy="24" rx="5" ry="4" fill="#4a4a4a" opacity="0.4"/>
+    <!-- Markings -->
+    <path d="M19 18 L22 15 L25 18" fill="none" stroke="#c04040" stroke-width="1" opacity="0.6"/>
+    <circle cx="22" cy="20" r="1.5" fill="#c04040" opacity="0.5"/>
+    <!-- Cephalothorax -->
+    <ellipse cx="22" cy="14" rx="6" ry="5" fill="#3a3a3a"/>
+    <!-- Eyes (8 eyes!) -->
+    <circle cx="19" cy="12" r="1.5" fill="#2a5a2a"/>
+    <circle cx="19" cy="12" r="0.8" fill="#1a1a1a"/>
+    <circle cx="25" cy="12" r="1.5" fill="#2a5a2a"/>
+    <circle cx="25" cy="12" r="0.8" fill="#1a1a1a"/>
+    <circle cx="20" cy="10" r="0.8" fill="#2a5a2a"/>
+    <circle cx="24" cy="10" r="0.8" fill="#2a5a2a"/>
+    <circle cx="18" cy="14" r="0.6" fill="#2a5a2a"/>
+    <circle cx="26" cy="14" r="0.6" fill="#2a5a2a"/>
+    <!-- Pedipalps -->
+    <path d="M20 16 Q18 17 17 16" fill="none" stroke="#3a3a3a" stroke-width="0.8"/>
+    <path d="M24 16 Q26 17 27 16" fill="none" stroke="#3a3a3a" stroke-width="0.8"/>
+  </g>
+</svg>

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -8 60 63" width="60" height="63">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -12 70 72" width="70" height="72">
   <style>
     @keyframes hop { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-4px)} 60%{transform:translateY(-4px)} }
     @keyframes earWiggle { 0%,80%,100%{transform:rotate(0deg)} 85%{transform:rotate(-12deg)} 92%{transform:rotate(8deg)} }
@@ -9,42 +9,42 @@
   </style>
   <g class="rabbit-body">
     <!-- Body -->
-    <ellipse cx="30" cy="36" rx="16" ry="12" fill="#D4C4B0"/>
+    <ellipse cx="30" cy="36" rx="16" ry="12" fill="#B87830"/>
     <!-- Belly -->
-    <ellipse cx="28" cy="40" rx="10" ry="7" fill="#EDE4D8"/>
+    <ellipse cx="28" cy="40" rx="10" ry="7" fill="#D4A868"/>
     <!-- Head -->
-    <circle cx="18" cy="26" r="10" fill="#D4C4B0"/>
+    <circle cx="18" cy="26" r="10" fill="#B87830"/>
     <!-- Cheek -->
-    <ellipse cx="16" cy="30" rx="6" ry="4" fill="#EDE4D8"/>
-    <!-- Eyes -->
+    <ellipse cx="16" cy="30" rx="6" ry="4" fill="#D4A868"/>
+    <!-- Eye -->
     <circle cx="14" cy="24" r="2.5" fill="#1a1a1a"/>
     <circle cx="13.5" cy="23.5" r="0.8" fill="white" opacity="0.8"/>
     <!-- Nose -->
     <g class="rabbit-nose">
-      <ellipse cx="12" cy="28" rx="1.8" ry="1.3" fill="#DEAAA0"/>
+      <ellipse cx="12" cy="28" rx="1.8" ry="1.3" fill="#E8A0A0"/>
     </g>
     <!-- Mouth -->
-    <path d="M12 29.3 Q13 30.5 14 29.5" fill="none" stroke="#B08070" stroke-width="0.6"/>
-    <path d="M12 29.3 Q11 30.5 10 29.5" fill="none" stroke="#B08070" stroke-width="0.6"/>
+    <path d="M12 29.3 Q13 30.5 14 29.5" fill="none" stroke="#8a5a3a" stroke-width="0.6"/>
+    <path d="M12 29.3 Q11 30.5 10 29.5" fill="none" stroke="#8a5a3a" stroke-width="0.6"/>
     <!-- Ears -->
     <g class="rabbit-ears">
-      <ellipse cx="16" cy="8" rx="4" ry="12" fill="#D4C4B0" transform="rotate(-10 16 8)"/>
-      <ellipse cx="16" cy="8" rx="2.5" ry="9" fill="#DEAAA0" opacity="0.5" transform="rotate(-10 16 8)"/>
-      <ellipse cx="24" cy="6" rx="4" ry="13" fill="#D4C4B0" transform="rotate(8 24 6)"/>
-      <ellipse cx="24" cy="6" rx="2.5" ry="10" fill="#DEAAA0" opacity="0.5" transform="rotate(8 24 6)"/>
+      <ellipse cx="16" cy="8" rx="4" ry="12" fill="#B87830" transform="rotate(-10 16 8)"/>
+      <ellipse cx="16" cy="8" rx="2.5" ry="9" fill="#E8B0A0" opacity="0.5" transform="rotate(-10 16 8)"/>
+      <ellipse cx="24" cy="6" rx="4" ry="13" fill="#B87830" transform="rotate(8 24 6)"/>
+      <ellipse cx="24" cy="6" rx="2.5" ry="10" fill="#E8B0A0" opacity="0.5" transform="rotate(8 24 6)"/>
     </g>
     <!-- Front legs -->
-    <rect x="18" y="44" width="4" height="8" rx="2" fill="#C4B4A0"/>
-    <rect x="24" y="44" width="4" height="8" rx="2" fill="#C4B4A0"/>
-    <!-- Back legs -->
-    <ellipse cx="40" cy="44" rx="7" ry="5" fill="#C4B4A0"/>
-    <rect x="42" y="44" width="5" height="8" rx="2" fill="#C4B4A0"/>
+    <rect x="18" y="44" width="4" height="8" rx="2" fill="#A06828"/>
+    <rect x="24" y="44" width="4" height="8" rx="2" fill="#A06828"/>
+    <!-- Back leg -->
+    <ellipse cx="40" cy="44" rx="7" ry="5" fill="#A06828"/>
+    <rect x="42" y="44" width="5" height="8" rx="2" fill="#A06828"/>
     <!-- Paws -->
-    <ellipse cx="20" cy="52.5" rx="3" ry="1.5" fill="#B0A090"/>
-    <ellipse cx="26" cy="52.5" rx="3" ry="1.5" fill="#B0A090"/>
-    <ellipse cx="44.5" cy="52.5" rx="3.5" ry="1.5" fill="#B0A090"/>
+    <ellipse cx="20" cy="52.5" rx="3" ry="1.5" fill="#8B5820"/>
+    <ellipse cx="26" cy="52.5" rx="3" ry="1.5" fill="#8B5820"/>
+    <ellipse cx="44.5" cy="52.5" rx="3.5" ry="1.5" fill="#8B5820"/>
     <!-- Tail (cotton puff) -->
-    <circle cx="46" cy="34" r="4" fill="#EDE4D8"/>
-    <circle cx="47" cy="33" r="2.5" fill="white" opacity="0.5"/>
+    <circle cx="46" cy="34" r="4" fill="#D4A868"/>
+    <circle cx="47" cy="33" r="2.5" fill="#E8C890" opacity="0.5"/>
   </g>
 </svg>

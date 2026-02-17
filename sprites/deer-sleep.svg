@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 130 75" width="130" height="75">
+  <style>
+    @keyframes sleepBreath { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.03)} }
+    .sleep-body { animation: sleepBreath 4s ease-in-out infinite; transform-origin: 60px 45px; }
+  </style>
+  <g class="sleep-body">
+    <!-- Tucked Legs (underneath body) -->
+    <ellipse cx="40" cy="55" rx="10" ry="4" fill="#6B4F12" opacity="0.6"/>
+    <ellipse cx="75" cy="55" rx="10" ry="4" fill="#6B4F12" opacity="0.6"/>
+    <!-- Body (lower, sitting) -->
+    <ellipse cx="60" cy="45" rx="30" ry="16" fill="#8B6914"/>
+    <ellipse cx="60" cy="50" rx="24" ry="10" fill="#C4A35A"/>
+    <!-- Head (resting on ground) -->
+    <circle cx="30" cy="38" r="14" fill="#8B6914"/>
+    <ellipse cx="28" cy="42" rx="8" ry="6" fill="#C4A35A"/>
+    <!-- Closed Eyes (curved lines instead of circles) -->
+    <path d="M23 35 Q26 33 29 35" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Nose -->
+    <ellipse cx="19" cy="40" rx="3" ry="2" fill="#2a1a0a"/>
+    <!-- Mouth (relaxed) -->
+    <path d="M19 42 Q22 43 24 42" fill="none" stroke="#4a3228" stroke-width="0.6"/>
+    <!-- Ears (relaxed, drooping) -->
+    <ellipse cx="26" cy="25" rx="4" ry="7" fill="#A07818" transform="rotate(-30 26 25)"/>
+    <ellipse cx="26" cy="25" rx="2.5" ry="4.5" fill="#D4A76A" transform="rotate(-30 26 25)"/>
+    <ellipse cx="36" cy="26" rx="4" ry="7" fill="#A07818" transform="rotate(5 36 26)"/>
+    <ellipse cx="36" cy="26" rx="2.5" ry="4.5" fill="#D4A76A" transform="rotate(5 36 26)"/>
+    <!-- Antlers (resting) -->
+    <path d="M28 24 L24 14 L20 18 M24 14 L26 10" fill="none" stroke="#5C4033" stroke-width="2" stroke-linecap="round"/>
+    <path d="M34 23 L38 12 L42 16 M38 12 L36 8" fill="none" stroke="#5C4033" stroke-width="2" stroke-linecap="round"/>
+    <!-- Tail -->
+    <ellipse cx="92" cy="40" rx="5" ry="4" fill="#A07818"/>
+  </g>
+</svg>

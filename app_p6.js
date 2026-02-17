@@ -37,8 +37,8 @@ class StickyNote {
             <div class="sticky-pin"></div>
             <textarea class="sticky-content" placeholder="Write something...">${this.text}</textarea>
             <div class="sticky-controls">
-                <button class="sticky-color-btn" title="Change Color">🎨</button>
-                <button class="sticky-del-btn" title="Delete">✖</button>
+                <button class="sticky-color-btn" title="Change Color">\u{1F3A8}</button>
+                <button class="sticky-del-btn" title="Delete">\u{1F5D1}</button>
             </div>
         `;
 
@@ -67,7 +67,7 @@ class StickyNote {
         });
 
         el.addEventListener('mousedown', (e) => {
-            if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON') return;
+            if (e.target.closest('textarea') || e.target.closest('button')) return;
             e.preventDefault();
             startDragSticky(this, e);
         });

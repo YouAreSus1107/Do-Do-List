@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 60 40" width="60" height="40">
+  <style>
+    @keyframes fishSwim { 0%,100%{transform:translateX(0)} 50%{transform:translateX(3px)} }
+    @keyframes tailFlick { 0%,100%{transform:rotate(0deg)} 30%{transform:rotate(12deg)} 70%{transform:rotate(-12deg)} }
+    @keyframes finWave { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-15deg)} }
+    .fish-body { animation: fishSwim 2s ease-in-out infinite; }
+    .fish-tail { animation: tailFlick 1s ease-in-out infinite; transform-origin: 38px 15px; }
+    .fish-fin { animation: finWave 1.5s ease-in-out infinite; transform-origin: 22px 20px; }
+  </style>
+  <g class="fish-body">
+    <!-- Tail -->
+    <g class="fish-tail">
+      <path d="M38 15 L48 6 L46 15 L48 24 Z" fill="#4A90D9"/>
+    </g>
+    <!-- Body -->
+    <ellipse cx="25" cy="15" rx="16" ry="10" fill="#5BA3E6"/>
+    <!-- Belly -->
+    <ellipse cx="24" cy="18" rx="12" ry="5" fill="#A8D4F5" opacity="0.7"/>
+    <!-- Scales shimmer -->
+    <ellipse cx="28" cy="12" rx="4" ry="3" fill="#7BB8EC" opacity="0.5"/>
+    <ellipse cx="22" cy="11" rx="3" ry="2.5" fill="#7BB8EC" opacity="0.4"/>
+    <!-- Dorsal Fin -->
+    <path d="M20 5 Q25 2 30 5 L25 8 Z" fill="#4A90D9"/>
+    <!-- Pectoral Fin -->
+    <g class="fish-fin">
+      <path d="M20 20 Q18 26 22 24 Z" fill="#4A90D9" opacity="0.8"/>
+    </g>
+    <!-- Eye -->
+    <circle cx="14" cy="13" r="2.5" fill="white"/>
+    <circle cx="13.5" cy="12.5" r="1.5" fill="#1a1a2e"/>
+    <circle cx="13" cy="12" r="0.5" fill="white" opacity="0.8"/>
+    <!-- Mouth -->
+    <path d="M9 15 Q10 16.5 11 15" fill="none" stroke="#3a6a9a" stroke-width="0.6"/>
+  </g>
+</svg>

@@ -23,18 +23,21 @@ function animateNature() {
 /* ===== ENTITY SYSTEM ===== */
 let entities = [];
 const FAUNA = {
-    deer: { spr: 'sprites/deer.svg', cat: 'ground', w: 90, h: 75, spd: 0.3, fSpd: 3, fR: 150, wt: { idle: 40, walking: 30, eating: 20, sleeping: 10 }, dur: { idle: [4, 9], walking: [5, 11], eating: [3, 7], sleeping: [6, 15] } },
-    fox: { spr: 'sprites/fox.svg', cat: 'ground', w: 60, h: 48, spd: 0.5, fSpd: 4, fR: 130, wt: { idle: 30, walking: 35, eating: 15, sleeping: 20 }, dur: { idle: [3, 7], walking: [4, 8], eating: [2, 5], sleeping: [5, 12] } },
-    rabbit: { spr: 'sprites/rabbit.svg', cat: 'ground', w: 50, h: 44, spd: 0.4, fSpd: 5, fR: 180, wt: { idle: 25, walking: 30, eating: 30, sleeping: 15 }, dur: { idle: [2, 5], walking: [3, 6], eating: [3, 6], sleeping: [4, 10] } },
-    squirrel: { spr: 'sprites/squirrel.svg', cat: 'ground', w: 45, h: 40, spd: 0.7, fSpd: 5.5, fR: 160, wt: { idle: 20, walking: 35, eating: 35, sleeping: 10 }, dur: { idle: [1, 4], walking: [3, 6], eating: [3, 7], sleeping: [3, 8] } },
+    deer: { spr: 'sprites/deer.svg', sleepSpr: 'sprites/deer-sleep.svg', cat: 'ground', w: 90, h: 75, spd: 0.3, fSpd: 3, fR: 150, wt: { idle: 40, walking: 30, eating: 20, sleeping: 10 }, dur: { idle: [4, 9], walking: [5, 11], eating: [3, 7], sleeping: [6, 15] } },
+    fox: { spr: 'sprites/fox.svg', sleepSpr: 'sprites/fox-sleep.svg', cat: 'ground', w: 60, h: 48, spd: 0.5, fSpd: 4, fR: 130, wt: { idle: 30, walking: 35, eating: 15, sleeping: 20 }, dur: { idle: [3, 7], walking: [4, 8], eating: [2, 5], sleeping: [5, 12] } },
+    rabbit: { spr: 'sprites/rabbit.svg', sleepSpr: 'sprites/rabbit-sleep.svg', cat: 'ground', w: 50, h: 44, spd: 0.5, fSpd: 5, fR: 180, move: 'bunnyHop', wt: { idle: 25, walking: 30, eating: 30, sleeping: 15 }, dur: { idle: [2, 5], walking: [3, 6], eating: [3, 6], sleeping: [4, 10] } },
+    squirrel: { spr: 'sprites/squirrel.svg', sleepSpr: 'sprites/squirrel-sleep.svg', cat: 'ground', w: 45, h: 40, spd: 0.7, fSpd: 5.5, fR: 160, wt: { idle: 20, walking: 35, eating: 35, sleeping: 10 }, dur: { idle: [1, 4], walking: [3, 6], eating: [3, 7], sleeping: [3, 8] } },
+    frog: { spr: 'sprites/frog.svg', cat: 'ground', w: 45, h: 38, spd: 0.4, fSpd: 4, fR: 120, move: 'hop', wt: { idle: 40, walking: 30, eating: 15, sleeping: 15 }, dur: { idle: [2, 5], walking: [2, 4], eating: [2, 5], sleeping: [4, 10] } },
     butterfly: { spr: 'sprites/butterfly.svg', cat: 'air', w: 50, h: 40, spd: 0.6, fSpd: 3.5, fR: 120, wt: { idle: 15, flying: 65, resting: 20 }, dur: { idle: [1, 3], flying: [5, 12], resting: [2, 5] } },
     bird: { spr: 'sprites/bird.svg', cat: 'sky', w: 55, h: 35, spd: 1.2, fSpd: 4, fR: 140, wt: { flying: 60, gliding: 40 }, dur: { flying: [6, 14], gliding: [3, 7] } },
     bee: { spr: 'sprites/bee.svg', cat: 'air', w: 30, h: 30, spd: 0.8, fSpd: 4, fR: 100, wt: { flying: 55, hovering: 45 }, dur: { flying: [4, 9], hovering: [2, 5] } },
+    bat: { spr: 'sprites/bat.svg', cat: 'air', w: 50, h: 36, spd: 0.7, fSpd: 3.5, fR: 100, wt: { flying: 60, hovering: 40 }, dur: { flying: [5, 10], hovering: [2, 5] } },
 };
 const FLORA_TYPES = ['tree', 'flower-pink', 'flower-yellow', 'flower-purple', 'fern', 'mushroom', 'grass'];
 const FLORA_DEF = { tree: { spr: 'sprites/tree.svg', w: 80, h: 100 }, 'flower-pink': { spr: 'sprites/flower-pink.svg', w: 36, h: 44 }, 'flower-yellow': { spr: 'sprites/flower-yellow.svg', w: 34, h: 42 }, 'flower-purple': { spr: 'sprites/flower-purple.svg', w: 34, h: 42 }, fern: { spr: 'sprites/fern.svg', w: 40, h: 44 }, mushroom: { spr: 'sprites/mushroom.svg', w: 34, h: 38 }, grass: { spr: 'sprites/grass.svg', w: 42, h: 26 } };
 const SPROUT_TYPES = ['flower-pink', 'flower-yellow', 'flower-purple', 'fern', 'mushroom', 'grass'];
-const FAUNA_KEYS = Object.keys(FAUNA); const MAX_CT = { deer: 2, fox: 2, rabbit: 3, squirrel: 2, butterfly: 4, bird: 3, bee: 3 };
+const FAUNA_KEYS = Object.keys(FAUNA);
+const MAX_CT = { deer: 2, fox: 2, rabbit: 3, squirrel: 2, butterfly: 4, bird: 3, bee: 3, frog: 2, bat: 2 };
 
 class FaunaEntity {
     constructor(type) {
@@ -44,13 +47,31 @@ class FaunaEntity {
         this.state = this._pick(); this.timer = this._dur(); this.tx = this.x; this.ty = this.y; this.fleeing = false; this.fleeTmr = 0;
         this.el = document.createElement('div'); this.el.className = 'entity state-' + this.state; this.el.style.width = this.w + 'px'; this.el.style.height = this.h + 'px';
         this.el.style.position = 'absolute'; this.el.style.left = this.x + 'px'; this.el.style.top = this.y + 'px';
-        const img = document.createElement('img'); img.src = d.spr; img.alt = ''; img.draggable = false; this.el.appendChild(img);
+        this.img = document.createElement('img'); this.img.src = d.spr; this.img.alt = ''; this.img.draggable = false; this.el.appendChild(this.img);
         const z = document.createElement('div'); z.className = 'zzz'; z.textContent = 'Z z z'; this.el.appendChild(z);
+        this._wasSleeping = false;
         this._render(); document.getElementById('entity-layer').appendChild(this.el);
     }
     _pick() { const w = this.d.wt, ks = Object.keys(w), tot = ks.reduce((s, k) => s + w[k], 0); let r = Math.random() * tot; for (const k of ks) { r -= w[k]; if (r <= 0) return k; } return ks[0]; }
     _dur() { const r = this.d.dur[this.state]; return (r[0] + Math.random() * (r[1] - r[0])) * 60; }
-    _transition() { this.state = this._pick(); this.timer = this._dur(); if (this.state === 'walking' || this.state === 'flying') this._newTgt(); if (this.state === 'gliding') { this.vx = (Math.random() > 0.5 ? 1 : -1) * this.d.spd * 1.5; this.vy = (Math.random() - 0.3) * 0.3; } }
+    _transition() {
+        const prevState = this.state;
+        this.state = this._pick(); this.timer = this._dur();
+        if (this.state === 'walking' || this.state === 'flying') this._newTgt();
+        if (this.state === 'gliding') { this.vx = (Math.random() > 0.5 ? 1 : -1) * this.d.spd * 1.5; this.vy = (Math.random() - 0.3) * 0.3; }
+        // Reset hop state on transition
+        if (this.state === 'walking' && this.d.move) { this.hopPhase = 0; this.hopCooldown = 10 + Math.random() * 30; }
+        // Sleep sprite swapping
+        const isSleeping = this.state === 'sleeping';
+        const wasSleeping = prevState === 'sleeping';
+        if (isSleeping && !wasSleeping && this.d.sleepSpr) {
+            this.img.src = this.d.sleepSpr;
+            this._wasSleeping = true;
+        } else if (!isSleeping && wasSleeping && this.d.sleepSpr) {
+            this.img.src = this.d.spr;
+            this._wasSleeping = false;
+        }
+    }
     _newTgt() {
         const gy = GROUND_Y(), ww = W(), hh = H();
         if (this.d.cat === 'ground') { this.tx = 50 + Math.random() * (ww - 100); this.ty = gy + 20 + Math.random() * (hh * 0.25); }
@@ -62,6 +83,8 @@ class FaunaEntity {
         if (this.d.cat === 'ground') { this.x = 50 + Math.random() * (ww - 100); this.y = gy + 20 + Math.random() * (hh * 0.25); }
         else if (this.d.cat === 'air') { this.x = 50 + Math.random() * (ww - 100); this.y = hh * 0.2 + Math.random() * hh * 0.3; }
         else { this.x = -100; this.y = hh * 0.05 + Math.random() * hh * 0.15; }
+        // Initialize hop state for hoppers
+        if (this.d.move) { this.hopPhase = 0; this.hopCooldown = 0; this.baseGroundY = this.y; }
     }
     update() {
         if (!this.alive) return;
@@ -71,7 +94,46 @@ class FaunaEntity {
         this.timer--; if (this.timer <= 0) this._transition(); const sp = this.d.spd;
         switch (this.state) {
             case 'idle': case 'resting': case 'hovering': this.vx *= 0.9; this.vy *= 0.9; if (this.state === 'hovering') { this.x += Math.sin(Date.now() * 0.003 + this.x) * 0.3; this.y += Math.cos(Date.now() * 0.002 + this.y) * 0.2; } break;
-            case 'walking': { const dx = this.tx - this.x, dy = this.ty - this.y, dd = Math.sqrt(dx * dx + dy * dy); if (dd > 5) { this.vx += (dx / dd) * sp * 0.1; this.vy += (dy / dd) * sp * 0.05; this.face = this.vx > 0 ? -1 : 1; } else { this.vx *= 0.8; this.vy *= 0.8; if (this.timer > 60) this._newTgt(); } this.vx *= 0.95; this.vy *= 0.95; break; }
+            case 'walking': {
+                // Hopping movement for frogs and bunnies
+                if (this.d.move === 'hop' || this.d.move === 'bunnyHop') {
+                    if (!this.hopCooldown) this.hopCooldown = 0;
+                    if (!this.hopPhase) this.hopPhase = 0;
+                    if (this.hopCooldown > 0) {
+                        this.hopCooldown--;
+                        this.vx *= 0.85; this.vy *= 0.85;
+                    } else if (this.hopPhase === 0) {
+                        // Start hop: launch toward target
+                        const dx = this.tx - this.x, dy = this.ty - this.y, dd = Math.sqrt(dx * dx + dy * dy);
+                        if (dd > 10) {
+                            const hopStr = this.d.move === 'bunnyHop' ? 2.5 : 3;
+                            this.vx = (dx / dd) * sp * hopStr;
+                            this.vy = -2.5; // Jump up
+                            this.face = this.vx > 0 ? -1 : 1;
+                            this.hopPhase = 1;
+                            this.baseGroundY = this.y;
+                        } else {
+                            this._newTgt();
+                        }
+                    } else {
+                        // In air: apply gravity
+                        this.vy += 0.12;
+                        if (this.y >= (this.baseGroundY || this.y)) {
+                            this.y = this.baseGroundY || this.y;
+                            this.vy = 0; this.vx *= 0.3;
+                            this.hopPhase = 0;
+                            this.hopCooldown = this.d.move === 'bunnyHop' ? (15 + Math.random() * 25) : (30 + Math.random() * 50);
+                        }
+                    }
+                } else {
+                    // Normal walking for deer, fox, squirrel
+                    const dx = this.tx - this.x, dy = this.ty - this.y, dd = Math.sqrt(dx * dx + dy * dy);
+                    if (dd > 5) { this.vx += (dx / dd) * sp * 0.1; this.vy += (dy / dd) * sp * 0.05; this.face = this.vx > 0 ? -1 : 1; }
+                    else { this.vx *= 0.8; this.vy *= 0.8; if (this.timer > 60) this._newTgt(); }
+                    this.vx *= 0.95; this.vy *= 0.95;
+                }
+                break;
+            }
             case 'flying': { const dx = this.tx - this.x, dy = this.ty - this.y, dd = Math.sqrt(dx * dx + dy * dy); if (dd > 10) { this.vx += (dx / dd) * sp * 0.12; this.vy += (dy / dd) * sp * 0.12; this.face = this.vx > 0 ? -1 : 1; } else this._newTgt(); this.vx *= 0.96; this.vy *= 0.96; this.y += Math.sin(Date.now() * 0.005 + this.x * 0.01) * 0.35; break; }
             case 'gliding': this.x += this.vx; this.y += this.vy; this.face = this.vx > 0 ? -1 : 1; this.y += Math.sin(Date.now() * 0.002) * 0.25; break;
             case 'eating': this.vx *= 0.9; this.vy *= 0.9; break; case 'sleeping': this.vx = 0; this.vy = 0; break;
@@ -80,12 +142,24 @@ class FaunaEntity {
     }
     _clamp() {
         if (this.x < -this.w) this.x = W() + 10; if (this.x > W() + this.w) this.x = -10;
-        const gy = GROUND_Y(), hh = H();
-        if (this.d.cat === 'ground') { this.y = Math.max(gy, Math.min(hh - this.h, this.y)); }
+        const gy = GROUND_Y(), hh = H(), ww = W();
+        if (this.d.cat === 'ground') {
+            // Allow hoppers to go above ground temporarily
+            if (this.d.move && this.hopPhase === 1) { this.y = Math.max(gy - 30, Math.min(hh - this.h, this.y)); }
+            else { this.y = Math.max(gy, Math.min(hh - this.h, this.y)); }
+        }
         else if (this.d.cat === 'sky') { this.y = Math.max(10, Math.min(hh * 0.3, this.y)); if (this.x > W() + 100) this._respawn(); }
         else { this.y = Math.max(hh * 0.08, Math.min(hh * 0.55, this.y)); }
     }
-    _render() { this.el.style.left = this.x + 'px'; this.el.style.top = this.y + 'px'; const st = this.fleeing ? 'fleeing' : this.state; this.el.className = 'entity state-' + st; let ex = ''; if (this.state === 'eating') ex = ' rotate(8deg)'; else if (this.state === 'sleeping') ex = ' rotate(5deg) scaleY(0.85)'; this.el.style.transform = ex + ' scaleX(' + this.face + ')'; }
+    _render() {
+        this.el.style.left = this.x + 'px'; this.el.style.top = this.y + 'px';
+        const st = this.fleeing ? 'fleeing' : this.state;
+        this.el.className = 'entity state-' + st + (this.d.cat === 'water' ? ' water' : '');
+        let ex = '';
+        if (this.state === 'eating') ex = ' rotate(8deg)';
+        // Sleeping: no rotate/squish hack - sleep sprite handles the pose
+        this.el.style.transform = ex + ' scaleX(' + this.face + ')';
+    }
     destroy() { this.alive = false; this.el.style.opacity = '0'; this.el.style.transition = 'opacity 0.5s'; setTimeout(() => { if (this.el.parentNode) this.el.remove(); }, 600); }
 }
 
@@ -118,6 +192,16 @@ function updateDayNight() {
             }
             return true;
         });
+        // Spawn bats at night
+        if (countF('bat') < MAX_CT.bat) entities.push(new FaunaEntity('bat'));
+    } else {
+        // Remove bats during day
+        entities = entities.filter(e => {
+            if (e instanceof FaunaEntity && e.type === 'bat') {
+                e.el.remove(); return false;
+            }
+            return true;
+        });
     }
 }
 
@@ -127,9 +211,14 @@ function countFlora() { return entities.filter(e => e instanceof FloraEntity && 
 function spawnInitial() {
     updateDayNight();
     for (let i = 0; i < 10; i++) entities.push(new FloraEntity(pick(FLORA_TYPES)));
+    // Ground creatures
+    setTimeout(() => entities.push(new FaunaEntity('frog')), 1200);
+    setTimeout(() => entities.push(new FaunaEntity('frog')), 3200);
     if (isNight()) {
         setTimeout(() => entities.push(new FaunaEntity('deer')), 800);
         setTimeout(() => entities.push(new FaunaEntity('fox')), 3500);
+        setTimeout(() => entities.push(new FaunaEntity('bat')), 1500);
+        setTimeout(() => entities.push(new FaunaEntity('bat')), 2800);
     } else {
         setTimeout(() => entities.push(new FaunaEntity('deer')), 800);
         setTimeout(() => entities.push(new FaunaEntity('rabbit')), 1500);
@@ -139,7 +228,9 @@ function spawnInitial() {
         setTimeout(() => entities.push(new FaunaEntity('bee')), 2800);
         setTimeout(() => entities.push(new FaunaEntity('fox')), 3500);
         setTimeout(() => entities.push(new FaunaEntity('squirrel')), 3000);
+        setTimeout(() => entities.push(new FaunaEntity('frog')), 4200);
     }
+
 }
 
 function entityTimers() {
@@ -162,7 +253,25 @@ function entityTimers() {
     setInterval(updateDayNight, 10000); // Check every 10s
 }
 
-function tickEntities() { entities = entities.filter(e => e.alive || (e.el && e.el.parentNode)); entities.forEach(e => { if (e.update) e.update(); }); requestAnimationFrame(tickEntities); }
+function separateGroundEntities() {
+    const ground = entities.filter(e => e instanceof FaunaEntity && e.alive && e.d.cat === 'ground');
+    for (let i = 0; i < ground.length; i++) {
+        for (let j = i + 1; j < ground.length; j++) {
+            const a = ground[i], b = ground[j];
+            const dx = (a.x + a.w / 2) - (b.x + b.w / 2);
+            const dy = (a.y + a.h / 2) - (b.y + b.h / 2);
+            const minDist = (a.w + b.w) * 0.4;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < minDist && dist > 0) {
+                const push = (minDist - dist) * 0.05;
+                const nx = dx / dist, ny = dy / dist;
+                if (a.state !== 'sleeping') { a.x += nx * push; a.y += ny * push * 0.3; }
+                if (b.state !== 'sleeping') { b.x -= nx * push; b.y -= ny * push * 0.3; }
+            }
+        }
+    }
+}
+function tickEntities() { entities = entities.filter(e => e.alive || (e.el && e.el.parentNode)); entities.forEach(e => { if (e.update) e.update(); }); separateGroundEntities(); requestAnimationFrame(tickEntities); }
 
 /* ===== CLICK-DRAG SPROUT ===== */
 const pc = document.getElementById('particle-canvas'), pctx = pc.getContext('2d'); let clickP = [], pAnim = false;

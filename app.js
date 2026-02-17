@@ -586,6 +586,8 @@ function init() {
     initClock(); initCave(); initToilet(); initDragBack(); triggerEvt(); // V9 Event
 }
 document.addEventListener('DOMContentLoaded', init);
+
+
 /* ===== INTERACTIVE ELEMENTS (app_p6.js) ===== */
 /* Sticky Notes, Stickers, and Draggable Decor */
 
@@ -625,8 +627,8 @@ class StickyNote {
             <div class="sticky-pin"></div>
             <textarea class="sticky-content" placeholder="Write something...">${this.text}</textarea>
             <div class="sticky-controls">
-                <button class="sticky-color-btn" title="Change Color">🎨</button>
-                <button class="sticky-del-btn" title="Delete">✖</button>
+                <button class="sticky-color-btn" title="Change Color">\u{1F3A8}</button>
+                <button class="sticky-del-btn" title="Delete">\u{1F5D1}</button>
             </div>
         `;
 
@@ -655,7 +657,7 @@ class StickyNote {
         });
 
         el.addEventListener('mousedown', (e) => {
-            if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON') return;
+            if (e.target.closest('textarea') || e.target.closest('button')) return;
             e.preventDefault();
             startDragSticky(this, e);
         });
@@ -818,6 +820,8 @@ function loadStickyData(data) {
     });
 }
 
+
+
 /* ===== NATURE CANVAS (animated) ===== */
 const nc = document.getElementById('nature-canvas'), ctx = nc.getContext('2d');
 let frame = 0, grassBlades = [], fireflies = [], leaves = [], pollen = [];
@@ -842,18 +846,21 @@ function animateNature() {
 /* ===== ENTITY SYSTEM ===== */
 let entities = [];
 const FAUNA = {
-    deer: { spr: 'sprites/deer.svg', cat: 'ground', w: 90, h: 75, spd: 0.3, fSpd: 3, fR: 150, wt: { idle: 40, walking: 30, eating: 20, sleeping: 10 }, dur: { idle: [4, 9], walking: [5, 11], eating: [3, 7], sleeping: [6, 15] } },
-    fox: { spr: 'sprites/fox.svg', cat: 'ground', w: 60, h: 48, spd: 0.5, fSpd: 4, fR: 130, wt: { idle: 30, walking: 35, eating: 15, sleeping: 20 }, dur: { idle: [3, 7], walking: [4, 8], eating: [2, 5], sleeping: [5, 12] } },
-    rabbit: { spr: 'sprites/rabbit.svg', cat: 'ground', w: 50, h: 44, spd: 0.4, fSpd: 5, fR: 180, wt: { idle: 25, walking: 30, eating: 30, sleeping: 15 }, dur: { idle: [2, 5], walking: [3, 6], eating: [3, 6], sleeping: [4, 10] } },
-    squirrel: { spr: 'sprites/squirrel.svg', cat: 'ground', w: 45, h: 40, spd: 0.7, fSpd: 5.5, fR: 160, wt: { idle: 20, walking: 35, eating: 35, sleeping: 10 }, dur: { idle: [1, 4], walking: [3, 6], eating: [3, 7], sleeping: [3, 8] } },
+    deer: { spr: 'sprites/deer.svg', sleepSpr: 'sprites/deer-sleep.svg', cat: 'ground', w: 90, h: 75, spd: 0.3, fSpd: 3, fR: 150, wt: { idle: 40, walking: 30, eating: 20, sleeping: 10 }, dur: { idle: [4, 9], walking: [5, 11], eating: [3, 7], sleeping: [6, 15] } },
+    fox: { spr: 'sprites/fox.svg', sleepSpr: 'sprites/fox-sleep.svg', cat: 'ground', w: 60, h: 48, spd: 0.5, fSpd: 4, fR: 130, wt: { idle: 30, walking: 35, eating: 15, sleeping: 20 }, dur: { idle: [3, 7], walking: [4, 8], eating: [2, 5], sleeping: [5, 12] } },
+    rabbit: { spr: 'sprites/rabbit.svg', sleepSpr: 'sprites/rabbit-sleep.svg', cat: 'ground', w: 50, h: 44, spd: 0.5, fSpd: 5, fR: 180, move: 'bunnyHop', wt: { idle: 25, walking: 30, eating: 30, sleeping: 15 }, dur: { idle: [2, 5], walking: [3, 6], eating: [3, 6], sleeping: [4, 10] } },
+    squirrel: { spr: 'sprites/squirrel.svg', sleepSpr: 'sprites/squirrel-sleep.svg', cat: 'ground', w: 45, h: 40, spd: 0.7, fSpd: 5.5, fR: 160, wt: { idle: 20, walking: 35, eating: 35, sleeping: 10 }, dur: { idle: [1, 4], walking: [3, 6], eating: [3, 7], sleeping: [3, 8] } },
+    frog: { spr: 'sprites/frog.svg', cat: 'ground', w: 45, h: 38, spd: 0.4, fSpd: 4, fR: 120, move: 'hop', wt: { idle: 40, walking: 30, eating: 15, sleeping: 15 }, dur: { idle: [2, 5], walking: [2, 4], eating: [2, 5], sleeping: [4, 10] } },
     butterfly: { spr: 'sprites/butterfly.svg', cat: 'air', w: 50, h: 40, spd: 0.6, fSpd: 3.5, fR: 120, wt: { idle: 15, flying: 65, resting: 20 }, dur: { idle: [1, 3], flying: [5, 12], resting: [2, 5] } },
     bird: { spr: 'sprites/bird.svg', cat: 'sky', w: 55, h: 35, spd: 1.2, fSpd: 4, fR: 140, wt: { flying: 60, gliding: 40 }, dur: { flying: [6, 14], gliding: [3, 7] } },
     bee: { spr: 'sprites/bee.svg', cat: 'air', w: 30, h: 30, spd: 0.8, fSpd: 4, fR: 100, wt: { flying: 55, hovering: 45 }, dur: { flying: [4, 9], hovering: [2, 5] } },
+    bat: { spr: 'sprites/bat.svg', cat: 'air', w: 50, h: 36, spd: 0.7, fSpd: 3.5, fR: 100, wt: { flying: 60, hovering: 40 }, dur: { flying: [5, 10], hovering: [2, 5] } },
 };
 const FLORA_TYPES = ['tree', 'flower-pink', 'flower-yellow', 'flower-purple', 'fern', 'mushroom', 'grass'];
 const FLORA_DEF = { tree: { spr: 'sprites/tree.svg', w: 80, h: 100 }, 'flower-pink': { spr: 'sprites/flower-pink.svg', w: 36, h: 44 }, 'flower-yellow': { spr: 'sprites/flower-yellow.svg', w: 34, h: 42 }, 'flower-purple': { spr: 'sprites/flower-purple.svg', w: 34, h: 42 }, fern: { spr: 'sprites/fern.svg', w: 40, h: 44 }, mushroom: { spr: 'sprites/mushroom.svg', w: 34, h: 38 }, grass: { spr: 'sprites/grass.svg', w: 42, h: 26 } };
 const SPROUT_TYPES = ['flower-pink', 'flower-yellow', 'flower-purple', 'fern', 'mushroom', 'grass'];
-const FAUNA_KEYS = Object.keys(FAUNA); const MAX_CT = { deer: 2, fox: 2, rabbit: 3, squirrel: 2, butterfly: 4, bird: 3, bee: 3 };
+const FAUNA_KEYS = Object.keys(FAUNA);
+const MAX_CT = { deer: 2, fox: 2, rabbit: 3, squirrel: 2, butterfly: 4, bird: 3, bee: 3, frog: 2, bat: 2 };
 
 class FaunaEntity {
     constructor(type) {
@@ -863,13 +870,31 @@ class FaunaEntity {
         this.state = this._pick(); this.timer = this._dur(); this.tx = this.x; this.ty = this.y; this.fleeing = false; this.fleeTmr = 0;
         this.el = document.createElement('div'); this.el.className = 'entity state-' + this.state; this.el.style.width = this.w + 'px'; this.el.style.height = this.h + 'px';
         this.el.style.position = 'absolute'; this.el.style.left = this.x + 'px'; this.el.style.top = this.y + 'px';
-        const img = document.createElement('img'); img.src = d.spr; img.alt = ''; img.draggable = false; this.el.appendChild(img);
+        this.img = document.createElement('img'); this.img.src = d.spr; this.img.alt = ''; this.img.draggable = false; this.el.appendChild(this.img);
         const z = document.createElement('div'); z.className = 'zzz'; z.textContent = 'Z z z'; this.el.appendChild(z);
+        this._wasSleeping = false;
         this._render(); document.getElementById('entity-layer').appendChild(this.el);
     }
     _pick() { const w = this.d.wt, ks = Object.keys(w), tot = ks.reduce((s, k) => s + w[k], 0); let r = Math.random() * tot; for (const k of ks) { r -= w[k]; if (r <= 0) return k; } return ks[0]; }
     _dur() { const r = this.d.dur[this.state]; return (r[0] + Math.random() * (r[1] - r[0])) * 60; }
-    _transition() { this.state = this._pick(); this.timer = this._dur(); if (this.state === 'walking' || this.state === 'flying') this._newTgt(); if (this.state === 'gliding') { this.vx = (Math.random() > 0.5 ? 1 : -1) * this.d.spd * 1.5; this.vy = (Math.random() - 0.3) * 0.3; } }
+    _transition() {
+        const prevState = this.state;
+        this.state = this._pick(); this.timer = this._dur();
+        if (this.state === 'walking' || this.state === 'flying') this._newTgt();
+        if (this.state === 'gliding') { this.vx = (Math.random() > 0.5 ? 1 : -1) * this.d.spd * 1.5; this.vy = (Math.random() - 0.3) * 0.3; }
+        // Reset hop state on transition
+        if (this.state === 'walking' && this.d.move) { this.hopPhase = 0; this.hopCooldown = 10 + Math.random() * 30; }
+        // Sleep sprite swapping
+        const isSleeping = this.state === 'sleeping';
+        const wasSleeping = prevState === 'sleeping';
+        if (isSleeping && !wasSleeping && this.d.sleepSpr) {
+            this.img.src = this.d.sleepSpr;
+            this._wasSleeping = true;
+        } else if (!isSleeping && wasSleeping && this.d.sleepSpr) {
+            this.img.src = this.d.spr;
+            this._wasSleeping = false;
+        }
+    }
     _newTgt() {
         const gy = GROUND_Y(), ww = W(), hh = H();
         if (this.d.cat === 'ground') { this.tx = 50 + Math.random() * (ww - 100); this.ty = gy + 20 + Math.random() * (hh * 0.25); }
@@ -881,6 +906,8 @@ class FaunaEntity {
         if (this.d.cat === 'ground') { this.x = 50 + Math.random() * (ww - 100); this.y = gy + 20 + Math.random() * (hh * 0.25); }
         else if (this.d.cat === 'air') { this.x = 50 + Math.random() * (ww - 100); this.y = hh * 0.2 + Math.random() * hh * 0.3; }
         else { this.x = -100; this.y = hh * 0.05 + Math.random() * hh * 0.15; }
+        // Initialize hop state for hoppers
+        if (this.d.move) { this.hopPhase = 0; this.hopCooldown = 0; this.baseGroundY = this.y; }
     }
     update() {
         if (!this.alive) return;
@@ -890,7 +917,46 @@ class FaunaEntity {
         this.timer--; if (this.timer <= 0) this._transition(); const sp = this.d.spd;
         switch (this.state) {
             case 'idle': case 'resting': case 'hovering': this.vx *= 0.9; this.vy *= 0.9; if (this.state === 'hovering') { this.x += Math.sin(Date.now() * 0.003 + this.x) * 0.3; this.y += Math.cos(Date.now() * 0.002 + this.y) * 0.2; } break;
-            case 'walking': { const dx = this.tx - this.x, dy = this.ty - this.y, dd = Math.sqrt(dx * dx + dy * dy); if (dd > 5) { this.vx += (dx / dd) * sp * 0.1; this.vy += (dy / dd) * sp * 0.05; this.face = this.vx > 0 ? -1 : 1; } else { this.vx *= 0.8; this.vy *= 0.8; if (this.timer > 60) this._newTgt(); } this.vx *= 0.95; this.vy *= 0.95; break; }
+            case 'walking': {
+                // Hopping movement for frogs and bunnies
+                if (this.d.move === 'hop' || this.d.move === 'bunnyHop') {
+                    if (!this.hopCooldown) this.hopCooldown = 0;
+                    if (!this.hopPhase) this.hopPhase = 0;
+                    if (this.hopCooldown > 0) {
+                        this.hopCooldown--;
+                        this.vx *= 0.85; this.vy *= 0.85;
+                    } else if (this.hopPhase === 0) {
+                        // Start hop: launch toward target
+                        const dx = this.tx - this.x, dy = this.ty - this.y, dd = Math.sqrt(dx * dx + dy * dy);
+                        if (dd > 10) {
+                            const hopStr = this.d.move === 'bunnyHop' ? 2.5 : 3;
+                            this.vx = (dx / dd) * sp * hopStr;
+                            this.vy = -2.5; // Jump up
+                            this.face = this.vx > 0 ? -1 : 1;
+                            this.hopPhase = 1;
+                            this.baseGroundY = this.y;
+                        } else {
+                            this._newTgt();
+                        }
+                    } else {
+                        // In air: apply gravity
+                        this.vy += 0.12;
+                        if (this.y >= (this.baseGroundY || this.y)) {
+                            this.y = this.baseGroundY || this.y;
+                            this.vy = 0; this.vx *= 0.3;
+                            this.hopPhase = 0;
+                            this.hopCooldown = this.d.move === 'bunnyHop' ? (15 + Math.random() * 25) : (30 + Math.random() * 50);
+                        }
+                    }
+                } else {
+                    // Normal walking for deer, fox, squirrel
+                    const dx = this.tx - this.x, dy = this.ty - this.y, dd = Math.sqrt(dx * dx + dy * dy);
+                    if (dd > 5) { this.vx += (dx / dd) * sp * 0.1; this.vy += (dy / dd) * sp * 0.05; this.face = this.vx > 0 ? -1 : 1; }
+                    else { this.vx *= 0.8; this.vy *= 0.8; if (this.timer > 60) this._newTgt(); }
+                    this.vx *= 0.95; this.vy *= 0.95;
+                }
+                break;
+            }
             case 'flying': { const dx = this.tx - this.x, dy = this.ty - this.y, dd = Math.sqrt(dx * dx + dy * dy); if (dd > 10) { this.vx += (dx / dd) * sp * 0.12; this.vy += (dy / dd) * sp * 0.12; this.face = this.vx > 0 ? -1 : 1; } else this._newTgt(); this.vx *= 0.96; this.vy *= 0.96; this.y += Math.sin(Date.now() * 0.005 + this.x * 0.01) * 0.35; break; }
             case 'gliding': this.x += this.vx; this.y += this.vy; this.face = this.vx > 0 ? -1 : 1; this.y += Math.sin(Date.now() * 0.002) * 0.25; break;
             case 'eating': this.vx *= 0.9; this.vy *= 0.9; break; case 'sleeping': this.vx = 0; this.vy = 0; break;
@@ -899,12 +965,24 @@ class FaunaEntity {
     }
     _clamp() {
         if (this.x < -this.w) this.x = W() + 10; if (this.x > W() + this.w) this.x = -10;
-        const gy = GROUND_Y(), hh = H();
-        if (this.d.cat === 'ground') { this.y = Math.max(gy, Math.min(hh - this.h, this.y)); }
+        const gy = GROUND_Y(), hh = H(), ww = W();
+        if (this.d.cat === 'ground') {
+            // Allow hoppers to go above ground temporarily
+            if (this.d.move && this.hopPhase === 1) { this.y = Math.max(gy - 30, Math.min(hh - this.h, this.y)); }
+            else { this.y = Math.max(gy, Math.min(hh - this.h, this.y)); }
+        }
         else if (this.d.cat === 'sky') { this.y = Math.max(10, Math.min(hh * 0.3, this.y)); if (this.x > W() + 100) this._respawn(); }
         else { this.y = Math.max(hh * 0.08, Math.min(hh * 0.55, this.y)); }
     }
-    _render() { this.el.style.left = this.x + 'px'; this.el.style.top = this.y + 'px'; const st = this.fleeing ? 'fleeing' : this.state; this.el.className = 'entity state-' + st; let ex = ''; if (this.state === 'eating') ex = ' rotate(8deg)'; else if (this.state === 'sleeping') ex = ' rotate(5deg) scaleY(0.85)'; this.el.style.transform = ex + ' scaleX(' + this.face + ')'; }
+    _render() {
+        this.el.style.left = this.x + 'px'; this.el.style.top = this.y + 'px';
+        const st = this.fleeing ? 'fleeing' : this.state;
+        this.el.className = 'entity state-' + st + (this.d.cat === 'water' ? ' water' : '');
+        let ex = '';
+        if (this.state === 'eating') ex = ' rotate(8deg)';
+        // Sleeping: no rotate/squish hack - sleep sprite handles the pose
+        this.el.style.transform = ex + ' scaleX(' + this.face + ')';
+    }
     destroy() { this.alive = false; this.el.style.opacity = '0'; this.el.style.transition = 'opacity 0.5s'; setTimeout(() => { if (this.el.parentNode) this.el.remove(); }, 600); }
 }
 
@@ -937,6 +1015,16 @@ function updateDayNight() {
             }
             return true;
         });
+        // Spawn bats at night
+        if (countF('bat') < MAX_CT.bat) entities.push(new FaunaEntity('bat'));
+    } else {
+        // Remove bats during day
+        entities = entities.filter(e => {
+            if (e instanceof FaunaEntity && e.type === 'bat') {
+                e.el.remove(); return false;
+            }
+            return true;
+        });
     }
 }
 
@@ -946,9 +1034,14 @@ function countFlora() { return entities.filter(e => e instanceof FloraEntity && 
 function spawnInitial() {
     updateDayNight();
     for (let i = 0; i < 10; i++) entities.push(new FloraEntity(pick(FLORA_TYPES)));
+    // Ground creatures
+    setTimeout(() => entities.push(new FaunaEntity('frog')), 1200);
+    setTimeout(() => entities.push(new FaunaEntity('frog')), 3200);
     if (isNight()) {
         setTimeout(() => entities.push(new FaunaEntity('deer')), 800);
         setTimeout(() => entities.push(new FaunaEntity('fox')), 3500);
+        setTimeout(() => entities.push(new FaunaEntity('bat')), 1500);
+        setTimeout(() => entities.push(new FaunaEntity('bat')), 2800);
     } else {
         setTimeout(() => entities.push(new FaunaEntity('deer')), 800);
         setTimeout(() => entities.push(new FaunaEntity('rabbit')), 1500);
@@ -958,7 +1051,9 @@ function spawnInitial() {
         setTimeout(() => entities.push(new FaunaEntity('bee')), 2800);
         setTimeout(() => entities.push(new FaunaEntity('fox')), 3500);
         setTimeout(() => entities.push(new FaunaEntity('squirrel')), 3000);
+        setTimeout(() => entities.push(new FaunaEntity('frog')), 4200);
     }
+
 }
 
 function entityTimers() {
@@ -981,7 +1076,25 @@ function entityTimers() {
     setInterval(updateDayNight, 10000); // Check every 10s
 }
 
-function tickEntities() { entities = entities.filter(e => e.alive || (e.el && e.el.parentNode)); entities.forEach(e => { if (e.update) e.update(); }); requestAnimationFrame(tickEntities); }
+function separateGroundEntities() {
+    const ground = entities.filter(e => e instanceof FaunaEntity && e.alive && e.d.cat === 'ground');
+    for (let i = 0; i < ground.length; i++) {
+        for (let j = i + 1; j < ground.length; j++) {
+            const a = ground[i], b = ground[j];
+            const dx = (a.x + a.w / 2) - (b.x + b.w / 2);
+            const dy = (a.y + a.h / 2) - (b.y + b.h / 2);
+            const minDist = (a.w + b.w) * 0.4;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < minDist && dist > 0) {
+                const push = (minDist - dist) * 0.05;
+                const nx = dx / dist, ny = dy / dist;
+                if (a.state !== 'sleeping') { a.x += nx * push; a.y += ny * push * 0.3; }
+                if (b.state !== 'sleeping') { b.x -= nx * push; b.y -= ny * push * 0.3; }
+            }
+        }
+    }
+}
+function tickEntities() { entities = entities.filter(e => e.alive || (e.el && e.el.parentNode)); entities.forEach(e => { if (e.update) e.update(); }); separateGroundEntities(); requestAnimationFrame(tickEntities); }
 
 /* ===== CLICK-DRAG SPROUT ===== */
 const pc = document.getElementById('particle-canvas'), pctx = pc.getContext('2d'); let clickP = [], pAnim = false;
@@ -1038,6 +1151,8 @@ function spawnEventVisuals(type) {
             break;
     }
 }
+
+
 
 /* ===== PHYSICS CARD SYSTEM & CONFETTI (Clean Core) ===== */
 
@@ -1099,6 +1214,8 @@ const cc = document.getElementById('confetti-canvas'), cctx = cc.getContext('2d'
 function confetti() { const cols = ['#4ade80', '#22c55e', '#f472b6', '#fbbf24', '#fb923c', '#c084fc', '#67e8f9']; for (let i = 0; i < 50; i++)confP.push({ x: cc.width * 0.3 + Math.random() * cc.width * 0.4, y: cc.height + 10, vx: (Math.random() - 0.5) * 10, vy: -(8 + Math.random() * 12), color: pick(cols), sz: 3 + Math.random() * 7, rot: Math.random() * 360, rs: (Math.random() - 0.5) * 8, g: 0.22, op: 1, sh: ['c', 'l', 'p'][Math.floor(Math.random() * 3)] }); if (!confAnim) { confAnim = true; animConf(); } }
 function animConf() { cctx.clearRect(0, 0, cc.width, cc.height); confP.forEach(p => { p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.rs; p.op -= 0.009; cctx.save(); cctx.translate(p.x, p.y); cctx.rotate(p.rot * Math.PI / 180); cctx.globalAlpha = Math.max(0, p.op); cctx.fillStyle = p.color; if (p.sh === 'l') { cctx.beginPath(); cctx.ellipse(0, 0, p.sz, p.sz * 0.35, 0.3, 0, Math.PI * 2); cctx.fill(); } else if (p.sh === 'p') { cctx.beginPath(); cctx.ellipse(0, 0, p.sz * 0.8, p.sz * 0.4, 0, 0, Math.PI * 2); cctx.fill(); } else { cctx.beginPath(); cctx.arc(0, 0, p.sz * 0.4, 0, Math.PI * 2); cctx.fill(); } cctx.restore(); }); confP = confP.filter(p => p.op > 0 && p.y < cc.height + 50); if (confP.length) requestAnimationFrame(animConf); else { confAnim = false; cctx.clearRect(0, 0, cc.width, cc.height); } }
 
+
+
 /* ===== CAVE BIOME (app_p4.js) ===== */
 
 /* --- Cave Canvas Drawing --- */
@@ -1147,17 +1264,42 @@ function drawCaveLandscape() {
         c.beginPath(); c.ellipse(rx, ry, rs, rs * 0.6, Math.random(), 0, Math.PI * 2); c.fill();
     }
 
-    // === Cave ceiling stalactites ===
+    // === Cave ceiling stalactites (natural, randomized clusters) ===
     const ceilY = h * 0.18;
-    for (let i = 0; i < 25; i++) {
-        const sx = Math.random() * w, sl = 20 + Math.random() * 80, sw = 4 + Math.random() * 12;
-        const sy = ceilY + (Math.random() * 30 - 15); // Randomize start Y
+    // Create organic clusters instead of evenly distributed spikes
+    const clusterCount = 5 + Math.floor(Math.random() * 4);
+    for (let ci = 0; ci < clusterCount; ci++) {
+        const clusterX = w * 0.05 + Math.random() * w * 0.9;
+        const clusterBaseY = ceilY + (Math.random() * 50 - 25); // More Y spread
+        const spikesInCluster = 2 + Math.floor(Math.random() * 4);
+        for (let i = 0; i < spikesInCluster; i++) {
+            const sx = clusterX + (Math.random() - 0.5) * 40;
+            const sy = clusterBaseY + (Math.random() * 20 - 10);
+            const sl = 15 + Math.random() * 70;
+            const sw = 3 + Math.random() * 10;
+            const grad = c.createLinearGradient(sx, sy, sx, sy + sl);
+            grad.addColorStop(0, '#2a2040'); grad.addColorStop(1, 'rgba(30,20,50,0.15)');
+            c.fillStyle = grad; c.beginPath();
+            // Slightly curved stalactite shape
+            c.moveTo(sx - sw / 2, sy);
+            c.quadraticCurveTo(sx - sw * 0.3, sy + sl * 0.6, sx, sy + sl);
+            c.quadraticCurveTo(sx + sw * 0.3, sy + sl * 0.6, sx + sw / 2, sy);
+            c.closePath(); c.fill();
+        }
+    }
+    // Add a few lone stalactites for variety
+    for (let i = 0; i < 4; i++) {
+        const sx = Math.random() * w;
+        const sy = ceilY * 0.5 + Math.random() * ceilY;
+        const sl = 10 + Math.random() * 35;
+        const sw = 2 + Math.random() * 6;
         const grad = c.createLinearGradient(sx, sy, sx, sy + sl);
-        grad.addColorStop(0, '#2a2040'); grad.addColorStop(1, 'rgba(30,20,50,0.2)');
+        grad.addColorStop(0, '#2a2040'); grad.addColorStop(1, 'rgba(30,20,50,0.1)');
         c.fillStyle = grad; c.beginPath();
         c.moveTo(sx - sw / 2, sy); c.lineTo(sx, sy + sl); c.lineTo(sx + sw / 2, sy);
         c.closePath(); c.fill();
     }
+
 
     // === Cave walls ===
     // Left wall
@@ -1217,14 +1359,37 @@ function drawCaveLandscape() {
     }
     c.restore();
 
-    // === Cave floor stalagmites ===
+    // === Cave floor stalagmites (randomized clusters) ===
     const floorY = h * 0.85;
-    for (let i = 0; i < 20; i++) {
-        const sx = w * 0.05 + Math.random() * w * 0.9, sl = 15 + Math.random() * 50, sw = 3 + Math.random() * 10;
-        const grad2 = c.createLinearGradient(sx, floorY + 20, sx, floorY + 20 - sl);
-        grad2.addColorStop(0, '#2a2040'); grad2.addColorStop(1, 'rgba(30,20,50,0.2)');
+    const stlagClusters = 4 + Math.floor(Math.random() * 3);
+    for (let ci = 0; ci < stlagClusters; ci++) {
+        const clX = w * 0.08 + Math.random() * w * 0.84;
+        const clBaseY = floorY + 15 + (Math.random() * 15 - 8);
+        const cnt = 2 + Math.floor(Math.random() * 3);
+        for (let i = 0; i < cnt; i++) {
+            const sx = clX + (Math.random() - 0.5) * 35;
+            const sy = clBaseY + (Math.random() * 10 - 5);
+            const sl = 12 + Math.random() * 45;
+            const sw = 3 + Math.random() * 8;
+            const grad2 = c.createLinearGradient(sx, sy, sx, sy - sl);
+            grad2.addColorStop(0, '#2a2040'); grad2.addColorStop(1, 'rgba(30,20,50,0.15)');
+            c.fillStyle = grad2; c.beginPath();
+            c.moveTo(sx - sw / 2, sy);
+            c.quadraticCurveTo(sx - sw * 0.25, sy - sl * 0.65, sx, sy - sl);
+            c.quadraticCurveTo(sx + sw * 0.25, sy - sl * 0.65, sx + sw / 2, sy);
+            c.closePath(); c.fill();
+        }
+    }
+    // Lone stalagmites
+    for (let i = 0; i < 3; i++) {
+        const sx = Math.random() * w;
+        const sy = floorY + 10 + Math.random() * 20;
+        const sl = 8 + Math.random() * 25;
+        const sw = 2 + Math.random() * 5;
+        const grad2 = c.createLinearGradient(sx, sy, sx, sy - sl);
+        grad2.addColorStop(0, '#2a2040'); grad2.addColorStop(1, 'rgba(30,20,50,0.1)');
         c.fillStyle = grad2; c.beginPath();
-        c.moveTo(sx - sw / 2, floorY + 20); c.lineTo(sx, floorY + 20 - sl); c.lineTo(sx + sw / 2, floorY + 20);
+        c.moveTo(sx - sw / 2, sy); c.lineTo(sx, sy - sl); c.lineTo(sx + sw / 2, sy);
         c.closePath(); c.fill();
     }
 
@@ -1246,6 +1411,107 @@ function drawCaveLandscape() {
         c.fillStyle = cg; c.beginPath(); c.arc(cx2, cy2 + csz * 0.3, csz * 2, 0, Math.PI * 2); c.fill();
     }
     c.globalAlpha = 1;
+
+    // === Moss patches on walls ===
+    c.globalAlpha = 0.25;
+    for (let i = 0; i < 12; i++) {
+        const onLeft = Math.random() > 0.5;
+        const mx = onLeft ? w * 0.01 + Math.random() * w * 0.08 : w * 0.91 + Math.random() * w * 0.08;
+        const my = h * 0.25 + Math.random() * h * 0.5;
+        const mw = 10 + Math.random() * 25, mh = 5 + Math.random() * 15;
+        c.fillStyle = `hsl(${120 + Math.random() * 30},${30 + Math.random() * 20}%,${15 + Math.random() * 10}%)`;
+        c.beginPath(); c.ellipse(mx, my, mw, mh, Math.random() * 0.5, 0, Math.PI * 2); c.fill();
+    }
+    c.globalAlpha = 1;
+
+    // === Glowing mushrooms on floor ===
+    const mushColors = ['#60ffa0', '#80ffcc', '#40ff80', '#a0ffe0'];
+    for (let i = 0; i < 6; i++) {
+        const mx = w * 0.1 + Math.random() * w * 0.8;
+        const my = floorY + 15 + Math.random() * 10;
+        const ms = 3 + Math.random() * 5;
+        const mc = mushColors[Math.floor(Math.random() * mushColors.length)];
+        // Stem
+        c.fillStyle = '#2a3a30'; c.fillRect(mx - 1, my - ms * 1.5, 2, ms * 1.5);
+        // Cap
+        c.fillStyle = mc; c.globalAlpha = 0.6;
+        c.beginPath(); c.arc(mx, my - ms * 1.5, ms, Math.PI, 0); c.fill();
+        // Glow
+        c.globalAlpha = 0.1;
+        const mg = c.createRadialGradient(mx, my - ms, 0, mx, my - ms, ms * 4);
+        mg.addColorStop(0, mc); mg.addColorStop(1, 'rgba(0,0,0,0)');
+        c.fillStyle = mg; c.beginPath(); c.arc(mx, my - ms, ms * 4, 0, Math.PI * 2); c.fill();
+    }
+    c.globalAlpha = 1;
+
+    // === Hanging vines from ceiling ===
+    for (let i = 0; i < 8; i++) {
+        const vx = w * 0.08 + Math.random() * w * 0.84;
+        const vy = ceilY + Math.random() * 20;
+        const vLen = 30 + Math.random() * 60;
+        c.strokeStyle = `rgba(${40 + Math.random() * 20},${80 + Math.random() * 30},${30 + Math.random() * 20},0.4)`;
+        c.lineWidth = 1 + Math.random() * 1.5;
+        c.beginPath(); c.moveTo(vx, vy);
+        c.bezierCurveTo(vx - 10 + Math.random() * 20, vy + vLen * 0.3,
+            vx - 15 + Math.random() * 30, vy + vLen * 0.6,
+            vx - 5 + Math.random() * 10, vy + vLen);
+        c.stroke();
+        // Little leaf at tip
+        c.fillStyle = 'rgba(50,100,40,0.3)';
+        c.beginPath(); c.ellipse(vx - 5 + Math.random() * 10, vy + vLen, 4, 2, Math.random(), 0, Math.PI * 2); c.fill();
+    }
+
+    // === Spider webs on ceiling ===
+    for (let i = 0; i < 3; i++) {
+        const wx = w * 0.1 + Math.random() * w * 0.8;
+        const wy = ceilY + Math.random() * h * 0.08;
+        const wr = 20 + Math.random() * 30;
+        c.strokeStyle = 'rgba(200,200,220,0.15)';
+        c.lineWidth = 0.5;
+        // Radial threads
+        const spokes = 6 + Math.floor(Math.random() * 4);
+        for (let s = 0; s < spokes; s++) {
+            const angle = (s / spokes) * Math.PI * 2;
+            c.beginPath();
+            c.moveTo(wx, wy);
+            c.lineTo(wx + Math.cos(angle) * wr, wy + Math.sin(angle) * wr * 0.6);
+            c.stroke();
+        }
+        // Spiral threads
+        for (let r = 0.3; r <= 1; r += 0.25) {
+            c.beginPath();
+            for (let s = 0; s <= spokes; s++) {
+                const angle = (s / spokes) * Math.PI * 2;
+                const px = wx + Math.cos(angle) * wr * r;
+                const py = wy + Math.sin(angle) * wr * r * 0.6;
+                if (s === 0) c.moveTo(px, py); else c.lineTo(px, py);
+            }
+            c.stroke();
+        }
+    }
+
+    // === Floor pebbles ===
+    c.globalAlpha = 0.3;
+    for (let i = 0; i < 15; i++) {
+        const px = w * 0.05 + Math.random() * w * 0.9;
+        const py = floorY + 20 + Math.random() * (h - floorY - 25);
+        const pr = 2 + Math.random() * 4;
+        c.fillStyle = `rgba(${40 + Math.random() * 30},${30 + Math.random() * 20},${50 + Math.random() * 20},0.5)`;
+        c.beginPath(); c.ellipse(px, py, pr, pr * 0.6, Math.random(), 0, Math.PI * 2); c.fill();
+    }
+    c.globalAlpha = 1;
+
+    // === Large Riverbed Stones ===
+    for (let i = 0; i < 8; i++) {
+        const sx = w * 0.1 + Math.random() * w * 0.8;
+        const sy = floorY + 25 + Math.random() * (h - floorY - 30);
+        const sr = 6 + Math.random() * 8;
+        c.fillStyle = `rgba(${30 + Math.random() * 20},${20 + Math.random() * 15},${40 + Math.random() * 20},0.8)`;
+        c.beginPath(); c.ellipse(sx, sy, sr, sr * 0.6, Math.random(), 0, Math.PI * 2); c.fill();
+        // Highlight
+        c.fillStyle = 'rgba(255,255,255,0.05)';
+        c.beginPath(); c.ellipse(sx - 2, sy - 2, sr * 0.3, sr * 0.2, 0, 0, Math.PI * 2); c.fill();
+    }
 }
 
 /* --- Cave Entities --- */
@@ -1255,6 +1521,11 @@ const CAVE_FAUNA = {
     glowworm: { w: 20, h: 15, cat: 'ceiling', wt: { glowing: 60, dim: 40 }, dur: { glowing: [5, 12], dim: [3, 8] } },
     crystal: { w: 30, h: 40, cat: 'static', wt: { idle: 50, shimmering: 50 }, dur: { idle: [4, 10], shimmering: [3, 8] } },
     cavefish: { w: 25, h: 15, cat: 'water', wt: { swimming: 70, idle: 30 }, dur: { swimming: [5, 12], idle: [2, 5] } },
+    fish: { w: 30, h: 20, cat: 'water', wt: { swimming: 65, idle: 35 }, dur: { swimming: [4, 8], idle: [2, 5] } },
+    'fish-gold': { w: 35, h: 24, cat: 'water', wt: { swimming: 55, idle: 45 }, dur: { swimming: [5, 10], idle: [3, 6] } },
+    squid: { w: 30, h: 32, cat: 'water', wt: { swimming: 50, idle: 50 }, dur: { swimming: [4, 9], idle: [3, 7] } },
+    crab: { w: 35, h: 22, cat: 'water', wt: { swimming: 40, idle: 60 }, dur: { swimming: [3, 6], idle: [4, 8] } },
+    pufferfish: { w: 30, h: 28, cat: 'water', wt: { swimming: 50, idle: 50 }, dur: { swimming: [3, 7], idle: [3, 6] } },
 };
 let caveEntities = [];
 
@@ -1264,8 +1535,13 @@ function batSVG() { return `<svg viewBox="0 0 50 35" xmlns="http://www.w3.org/20
 function glowwormSVG() { return `<svg viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg"><ellipse cx="10" cy="8" rx="6" ry="4" fill="#2a4a3a"/><circle cx="10" cy="8" r="3" fill="#60ffa0" opacity="0.6"/><circle cx="10" cy="8" r="5" fill="#60ffa0" opacity="0.15"/></svg>`; }
 function crystalSVG() { return `<svg viewBox="0 0 30 45" xmlns="http://www.w3.org/2000/svg"><polygon points="15,0 8,35 22,35" fill="#b388ff" opacity="0.8"/><polygon points="15,0 10,25 15,35 20,25" fill="#ce93d8" opacity="0.6"/><polygon points="15,2 12,18 18,18" fill="rgba(255,255,255,0.2)"/><polygon points="6,15 1,40 11,40" fill="#9575cd" opacity="0.6"/><polygon points="24,12 19,38 29,38" fill="#7e57c2" opacity="0.6"/></svg>`; }
 function cavefishSVG() { return `<svg viewBox="0 0 30 18" xmlns="http://www.w3.org/2000/svg"><ellipse cx="15" cy="9" rx="10" ry="5" fill="rgba(120,180,255,0.6)"/><polygon points="26,9 32,4 32,14" fill="rgba(100,160,240,0.5)"/><circle cx="10" cy="8" r="1.5" fill="rgba(255,255,255,0.7)"/><circle cx="10" cy="8" r="0.8" fill="#1a1a3a"/></svg>`; }
+function fishSVG() { return `<svg viewBox="-3 -3 56 36" xmlns="http://www.w3.org/2000/svg"><ellipse cx="22" cy="15" rx="15" ry="9" fill="#5090d0"/><polygon points="38,15 48,8 48,22" fill="#4080c0" opacity="0.8"/><ellipse cx="22" cy="17" rx="10" ry="5" fill="#80b8e8" opacity="0.4"/><circle cx="13" cy="13" r="2.5" fill="white"/><circle cx="13" cy="13" r="1.3" fill="#1a1a3a"/><path d="M22 6 Q26 3 28 6" fill="#5090d0" opacity="0.7"/></svg>`; }
+function fishGoldSVG() { return `<svg viewBox="-3 -3 61 41" xmlns="http://www.w3.org/2000/svg"><ellipse cx="25" cy="18" rx="17" ry="11" fill="#e8a030"/><polygon points="43,18 53,10 53,26" fill="#d89020" opacity="0.8"/><ellipse cx="25" cy="20" rx="11" ry="6" fill="#f0c060" opacity="0.4"/><ellipse cx="20" cy="14" rx="4" ry="3" fill="#d07020" opacity="0.5"/><circle cx="15" cy="15" r="2.8" fill="white"/><circle cx="15" cy="15" r="1.5" fill="#1a1a3a"/><path d="M25 7 Q29 4 32 7" fill="#e8a030" opacity="0.7"/></svg>`; }
+function squidSVG() { return `<svg viewBox="-3 -3 50 50" xmlns="http://www.w3.org/2000/svg"><ellipse cx="22" cy="15" rx="10" ry="14" fill="#d07098"/><ellipse cx="22" cy="12" rx="6" ry="8" fill="#e890a8" opacity="0.4"/><circle cx="17" cy="18" r="2.5" fill="white"/><circle cx="17" cy="18" r="1.3" fill="#1a1a3a"/><circle cx="27" cy="18" r="2.5" fill="white"/><circle cx="27" cy="18" r="1.3" fill="#1a1a3a"/><path d="M14 26 Q10 34 13 40" stroke="#d07098" stroke-width="2" fill="none"/><path d="M18 28 Q16 36 18 42" stroke="#d07098" stroke-width="2" fill="none"/><path d="M22 28 Q22 37 24 42" stroke="#d07098" stroke-width="2" fill="none"/><path d="M26 28 Q28 36 26 42" stroke="#d07098" stroke-width="2" fill="none"/><path d="M30 26 Q34 34 31 40" stroke="#d07098" stroke-width="2" fill="none"/></svg>`; }
+function crabSVG() { return `<svg viewBox="-3 -3 60 36" xmlns="http://www.w3.org/2000/svg"><ellipse cx="27" cy="18" rx="14" ry="9" fill="#e05030"/><ellipse cx="27" cy="16" rx="9" ry="4" fill="#e86848" opacity="0.4"/><line x1="18" y1="4" x2="22" y2="10" stroke="#c04020" stroke-width="2"/><line x1="36" y1="4" x2="32" y2="10" stroke="#c04020" stroke-width="2"/><circle cx="18" cy="3" r="2.2" fill="white"/><circle cx="18" cy="3" r="1.2" fill="#1a1a3a"/><circle cx="36" cy="3" r="2.2" fill="white"/><circle cx="36" cy="3" r="1.2" fill="#1a1a3a"/><line x1="10" y1="20" x2="3" y2="26" stroke="#c04020" stroke-width="1.5"/><line x1="15" y1="22" x2="7" y2="26" stroke="#c04020" stroke-width="1.5"/><line x1="40" y1="22" x2="47" y2="26" stroke="#c04020" stroke-width="1.5"/><line x1="44" y1="20" x2="51" y2="26" stroke="#c04020" stroke-width="1.5"/><ellipse cx="7" cy="10" rx="4" ry="3" fill="#d85040"/><ellipse cx="47" cy="10" rx="4" ry="3" fill="#d85040"/></svg>`; }
+function pufferfishSVG() { return `<svg viewBox="-3 -3 50 44" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="20" rx="12" ry="12" r="12" fill="#f0d050"/><ellipse cx="22" cy="24" rx="8" ry="5" fill="#f8e890" opacity="0.5"/><line x1="22" y1="8" x2="22" y2="4" stroke="#d8b030" stroke-width="1.2"/><line x1="14" y1="10" x2="11" y2="6" stroke="#d8b030" stroke-width="1.2"/><line x1="30" y1="10" x2="33" y2="6" stroke="#d8b030" stroke-width="1.2"/><line x1="10" y1="16" x2="6" y2="14" stroke="#d8b030" stroke-width="1.2"/><line x1="34" y1="16" x2="38" y2="14" stroke="#d8b030" stroke-width="1.2"/><line x1="10" y1="26" x2="6" y2="28" stroke="#d8b030" stroke-width="1.2"/><line x1="34" y1="26" x2="38" y2="28" stroke="#d8b030" stroke-width="1.2"/><line x1="14" y1="30" x2="11" y2="34" stroke="#d8b030" stroke-width="1.2"/><line x1="30" y1="30" x2="33" y2="34" stroke="#d8b030" stroke-width="1.2"/><circle cx="17" cy="17" r="3" fill="white"/><circle cx="17" cy="17" r="1.5" fill="#1a1a3a"/><circle cx="27" cy="17" r="3" fill="white"/><circle cx="27" cy="17" r="1.5" fill="#1a1a3a"/><polygon points="34,20 42,16 40,22 42,28 34,24" fill="#e8c040" opacity="0.7"/></svg>`; }
 
-const CAVE_SVG_MAP = { spider: spiderSVG, bat: batSVG, glowworm: glowwormSVG, crystal: crystalSVG, cavefish: cavefishSVG };
+const CAVE_SVG_MAP = { spider: spiderSVG, bat: batSVG, glowworm: glowwormSVG, crystal: crystalSVG, cavefish: cavefishSVG, fish: fishSVG, 'fish-gold': fishGoldSVG, squid: squidSVG, crab: crabSVG, pufferfish: pufferfishSVG };
 
 class CaveEntity {
     constructor(type) {
@@ -1298,7 +1574,16 @@ class CaveEntity {
             case 'ceiling': this.x = sw * 0.1 + Math.random() * sw * 0.8; this.y = sh * 0.18 + Math.random() * sh * 0.05; this.baseY = this.y; break;
             case 'air': this.x = sw * 0.1 + Math.random() * sw * 0.8; this.y = sh * 0.25 + Math.random() * sh * 0.35; break;
             case 'static': this.x = sw * 0.05 + Math.random() * sw * 0.9; this.y = sh * 0.3 + Math.random() * sh * 0.4; break;
-            case 'water': this.x = sw * 0.15 + Math.random() * sw * 0.7; this.y = sh * 0.72 + Math.random() * sh * 0.08; break;
+            case 'water':
+                this.x = sw * 0.15 + Math.random() * sw * 0.7;
+                if (this.type === 'crab') {
+                    // Crabs crawl on the bottom
+                    this.y = sh * 0.9 + Math.random() * sh * 0.08;
+                } else {
+                    // Fish swim in the middle
+                    this.y = sh * 0.72 + Math.random() * sh * 0.08;
+                }
+                break;
         }
     }
     update() {
@@ -1358,22 +1643,29 @@ class CaveEntity {
             case 'crystal':
                 // completely static
                 break;
-                break;
-            case 'cavefish':
-                if (this.state === 'swimming') {
-                    this.vx += (Math.random() - 0.5) * 0.1;
-                    this.vx = Math.max(-1, Math.min(1, this.vx));
-                    this.face = this.vx > 0 ? -1 : 1;
-                    this.y += Math.sin(Date.now() * 0.003 + this.x * 0.05) * 0.2;
-                } else {
-                    this.vx *= 0.95;
+            default:
+                // Generic water entity movement (fish, fish-gold, squid, crab, pufferfish, cavefish)
+                if (this.d.cat === 'water') {
+                    if (this.state === 'swimming') {
+                        this.vx += (Math.random() - 0.5) * 0.1;
+                        this.vx = Math.max(-1.2, Math.min(1.2, this.vx));
+                        this.face = this.vx > 0 ? -1 : 1;
+                        this.y += Math.sin(Date.now() * 0.003 + this.x * 0.05) * 0.2;
+                    } else {
+                        this.vx *= 0.95;
+                    }
+                    this.x += this.vx;
+                    if (this.x < sw * 0.1) this.vx = Math.abs(this.vx) + 0.2;
+                    if (this.x > sw * 0.85) this.vx = -Math.abs(this.vx) - 0.2;
+                    // Clamp to water
+                    const riverY2 = sh * 0.75;
+                    if (this.type === 'crab') {
+                        // Crabs stay on bottom
+                        this.y = Math.max(sh * 0.82, Math.min(sh * 0.95, this.y));
+                    } else {
+                        this.y = Math.max(riverY2 + 15, Math.min(sh * 0.9, this.y));
+                    }
                 }
-                this.x += this.vx;
-                if (this.x < sw * 0.1) this.vx = Math.abs(this.vx) + 0.2;
-                if (this.x > sw * 0.85) this.vx = -Math.abs(this.vx) - 0.2;
-                // Clamp to water
-                const riverY = sh * 0.75;
-                this.y = Math.max(riverY + 15, Math.min(sh - 10, this.y)); // Ensure below water
                 break;
         }
         this._render();
@@ -1386,16 +1678,22 @@ class CaveEntity {
 }
 
 function spawnCaveEntities() {
-    // Spiders
-    for (let i = 0; i < 3; i++) caveEntities.push(new CaveEntity('spider'));
+    // Spiders on ceiling
+    for (let i = 0; i < 4; i++) caveEntities.push(new CaveEntity('spider'));
     // Bats
-    for (let i = 0; i < 2; i++) caveEntities.push(new CaveEntity('bat'));
+    for (let i = 0; i < 3; i++) caveEntities.push(new CaveEntity('bat'));
     // Glowworms
-    for (let i = 0; i < 6; i++) caveEntities.push(new CaveEntity('glowworm'));
+    for (let i = 0; i < 8; i++) caveEntities.push(new CaveEntity('glowworm'));
     // Crystals
-    for (let i = 0; i < 4; i++) caveEntities.push(new CaveEntity('crystal'));
-    // Cave fish
-    for (let i = 0; i < 3; i++) caveEntities.push(new CaveEntity('cavefish'));
+    for (let i = 0; i < 5; i++) caveEntities.push(new CaveEntity('crystal'));
+    // Cave fish (translucent)
+    for (let i = 0; i < 2; i++) caveEntities.push(new CaveEntity('cavefish'));
+    // Marine life in the underground river
+    for (let i = 0; i < 2; i++) caveEntities.push(new CaveEntity('fish'));
+    caveEntities.push(new CaveEntity('fish-gold'));
+    caveEntities.push(new CaveEntity('squid'));
+    for (let i = 0; i < 2; i++) caveEntities.push(new CaveEntity('crab'));
+    caveEntities.push(new CaveEntity('pufferfish'));
 }
 
 function tickCaveEntities() {
@@ -1546,6 +1844,8 @@ function initCave() {
     setInterval(dripEffect, 3000);
     initPomodoro();
 }
+
+
 
 /* ===== V18 Cloud Sync (Supabase) ===== */
 
@@ -1907,6 +2207,8 @@ window.syncAllTasksToCloud = syncAllTasksToCloud;
 window.saveCloudSticky = saveCloudSticky;
 window.deleteCloudSticky = deleteCloudSticky;
 window.syncAllTasksToCloud = syncAllTasksToCloud;
+
+
 /* ===== SPOTIFY INTEGRATION (PKCE Flow) ===== */
 const SPOTIFY_CLIENT_ID = 'ce11c02e7fab488684ed2b5c53c128f2';
 // Determine Redirect URI dynamically (Local vs Production)

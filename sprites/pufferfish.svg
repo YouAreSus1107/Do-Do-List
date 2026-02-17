@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 55 50" width="55" height="50">
+  <style>
+    @keyframes puff { 0%,85%,100%{transform:scale(1)} 90%{transform:scale(1.15)} }
+    @keyframes finFlap { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-20deg)} }
+    @keyframes finFlapR { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(20deg)} }
+    @keyframes pufferSwim { 0%,100%{transform:translateX(0)} 50%{transform:translateX(2px)} }
+    .puffer-body { animation: puff 5s ease-in-out infinite, pufferSwim 2s ease-in-out infinite; transform-origin: 22px 22px; }
+    .pf-fin-l { animation: finFlap 1.2s ease-in-out infinite; transform-origin: 12px 24px; }
+    .pf-fin-r { animation: finFlapR 1.2s ease-in-out infinite; transform-origin: 32px 24px; }
+  </style>
+  <g class="puffer-body">
+    <!-- Tail -->
+    <path d="M36 20 L44 15 L42 22 L44 29 L36 24 Z" fill="#E8C040"/>
+    <!-- Body (round) -->
+    <circle cx="22" cy="22" r="14" fill="#F0D050"/>
+    <!-- Belly -->
+    <ellipse cx="22" cy="26" rx="10" ry="7" fill="#F8E890" opacity="0.6"/>
+    <!-- Spikes (all around) -->
+    <line x1="22" y1="8" x2="22" y2="4" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="14" y1="10" x2="11" y2="6" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="30" y1="10" x2="33" y2="6" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="9" y1="16" x2="5" y2="14" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="35" y1="16" x2="39" y2="14" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="9" y1="28" x2="5" y2="30" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="35" y1="28" x2="39" y2="30" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="14" y1="34" x2="11" y2="38" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="30" y1="34" x2="33" y2="38" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="22" y1="36" x2="22" y2="40" stroke="#D8B030" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Spots -->
+    <circle cx="18" cy="18" r="2" fill="#E8B830" opacity="0.5"/>
+    <circle cx="26" cy="26" r="1.8" fill="#E8B830" opacity="0.4"/>
+    <circle cx="24" cy="16" r="1.5" fill="#E8B830" opacity="0.3"/>
+    <!-- Dorsal fin -->
+    <path d="M18 8 Q22 5 26 8" fill="#E8C040" opacity="0.7"/>
+    <!-- Pectoral fins -->
+    <g class="pf-fin-l">
+      <path d="M10 22 Q6 18 8 24 Q6 26 10 26" fill="#E8C040" opacity="0.7"/>
+    </g>
+    <g class="pf-fin-r">
+      <path d="M34 22 Q38 18 36 24 Q38 26 34 26" fill="#E8C040" opacity="0.7"/>
+    </g>
+    <!-- Eyes (big, cute) -->
+    <circle cx="16" cy="18" r="3.5" fill="white"/>
+    <circle cx="16" cy="18" r="2" fill="#1a1a2e"/>
+    <circle cx="15.5" cy="17.5" r="0.7" fill="white" opacity="0.8"/>
+    <circle cx="28" cy="18" r="3.5" fill="white"/>
+    <circle cx="28" cy="18" r="2" fill="#1a1a2e"/>
+    <circle cx="27.5" cy="17.5" r="0.7" fill="white" opacity="0.8"/>
+    <!-- Mouth (pouty) -->
+    <ellipse cx="22" cy="26" rx="2.5" ry="1.5" fill="#E0A030"/>
+    <path d="M20 26 Q22 28 24 26" fill="none" stroke="#C08020" stroke-width="0.6"/>
+  </g>
+</svg>

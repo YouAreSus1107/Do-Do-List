@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 70 50" width="70" height="50">
+  <style>
+    @keyframes batFlap { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-25deg)} }
+    @keyframes batFlapR { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(25deg)} }
+    @keyframes batBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+    .bat-wing-l { animation: batFlap 0.4s ease-in-out infinite; transform-origin: 28px 18px; }
+    .bat-wing-r { animation: batFlapR 0.4s ease-in-out infinite; transform-origin: 32px 18px; }
+    .bat-body { animation: batBob 0.8s ease-in-out infinite; }
+  </style>
+  <g class="bat-body">
+    <!-- Wings -->
+    <g class="bat-wing-l">
+      <path d="M28 18 Q15 5 5 12 Q8 16 12 15 Q6 20 2 22 Q8 22 14 20 Q10 26 8 28 Q14 24 20 22 L28 22 Z" fill="#4A3558" opacity="0.9"/>
+      <path d="M28 18 Q20 10 12 15" fill="none" stroke="#5A4568" stroke-width="0.5"/>
+    </g>
+    <g class="bat-wing-r">
+      <path d="M32 18 Q45 5 55 12 Q52 16 48 15 Q54 20 58 22 Q52 22 46 20 Q50 26 52 28 Q46 24 40 22 L32 22 Z" fill="#4A3558" opacity="0.9"/>
+      <path d="M32 18 Q40 10 48 15" fill="none" stroke="#5A4568" stroke-width="0.5"/>
+    </g>
+    <!-- Body -->
+    <ellipse cx="30" cy="20" rx="8" ry="10" fill="#5A4068"/>
+    <!-- Belly -->
+    <ellipse cx="30" cy="23" rx="5" ry="5" fill="#7A6088" opacity="0.5"/>
+    <!-- Head -->
+    <circle cx="30" cy="12" r="6" fill="#5A4068"/>
+    <!-- Ears -->
+    <polygon points="25,8 23,1 28,6" fill="#5A4068"/>
+    <polygon points="35,8 37,1 32,6" fill="#5A4068"/>
+    <polygon points="25.5,7 24,3 27,6" fill="#7A6088" opacity="0.4"/>
+    <polygon points="34.5,7 36,3 33,6" fill="#7A6088" opacity="0.4"/>
+    <!-- Eyes -->
+    <circle cx="27" cy="11" r="2" fill="#F0D040"/>
+    <circle cx="27" cy="11" r="1" fill="#1a1a2e"/>
+    <circle cx="33" cy="11" r="2" fill="#F0D040"/>
+    <circle cx="33" cy="11" r="1" fill="#1a1a2e"/>
+    <!-- Nose -->
+    <circle cx="30" cy="14" r="1" fill="#3A2848"/>
+    <!-- Mouth -->
+    <path d="M28 15.5 Q30 17 32 15.5" fill="none" stroke="#3A2848" stroke-width="0.5"/>
+    <!-- Tiny fangs -->
+    <line x1="29" y1="15.5" x2="29" y2="16.5" stroke="#F8F0E0" stroke-width="0.5"/>
+    <line x1="31" y1="15.5" x2="31" y2="16.5" stroke="#F8F0E0" stroke-width="0.5"/>
+    <!-- Feet -->
+    <path d="M26 29 Q25 32 27 31" fill="none" stroke="#4A3558" stroke-width="1"/>
+    <path d="M34 29 Q35 32 33 31" fill="none" stroke="#4A3558" stroke-width="1"/>
+  </g>
+</svg>
